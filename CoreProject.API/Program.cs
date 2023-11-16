@@ -69,7 +69,6 @@ builder.Services.AddScoped<GetAllFeatureQueryHandler>();
 builder.Services.AddScoped<GetAllAboutQueryHandler>();
 builder.Services.AddScoped<GetAllServiceQueryHandler>();
 builder.Services.AddScoped<GetAllContactQueryHandler>();
-builder.Services.AddScoped<GetAllPortfolioQueryHandler>();
 builder.Services.AddScoped<GetAllSocialMediaQueryHandler>();
 builder.Services.AddScoped<GetAllTestimonialQueryHandler>();
 builder.Services.AddScoped<SendMessageCommandHandler>();
@@ -87,6 +86,11 @@ builder.Services.AddScoped<AddExperienceCommandHandler>();
 builder.Services.AddScoped<DeleteExperienceCommandHandler>();
 builder.Services.AddScoped<UpdateExperienceCommandHandler>();
 
+builder.Services.AddScoped<GetAllPortfolioQueryHandler>();
+builder.Services.AddScoped<GetPortfolioByIdQueryHandler>();
+builder.Services.AddScoped<AddPortfolioCommandHandler>();
+builder.Services.AddScoped<DeletePortfolioCommandHandler>();
+builder.Services.AddScoped<UpdatePortfolioCommandHandler>();
 
 
 builder.Services.AddControllers();
