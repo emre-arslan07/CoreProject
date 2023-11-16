@@ -1,0 +1,21 @@
+﻿@model SkillVM
+@{
+    ViewData["Title"] = "AddSkill";
+    Layout = "~/Views/Main/_AdminLayout.cshtml";
+}
+<div class="card-header border-0">
+    <h3 class="mb-0">
+        Yetenek Ekle
+    </h3>
+</div>
+<form class="form-group" method="post">
+    <br />
+    @Html.Label("Yetenek Başlığı")
+    @Html.TextBoxFor(x => x.Title, new { @class = "form-control" }) 
+    <br />
+    @Html.Label("Değer")
+    @Html.TextBoxFor(x => x.Value, new { @class = "form-control" })   
+    <br />
+    <button type="submit" class="btn btn-primary">Kaydet</button>
+</form>
+

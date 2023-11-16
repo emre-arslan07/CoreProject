@@ -1,0 +1,21 @@
+﻿@model SkillVM
+@{
+    ViewData["Title"] = "EditSkill";
+    Layout = "~/Views/Main/_AdminLayout.cshtml";
+}
+
+<div class="card-header border-0">
+    <h3>Yetenek Düzenleme Sayfası</h3>
+</div>
+@using (Html.BeginForm("EditSkill", "Skill", FormMethod.Post))
+{
+    @Html.HiddenFor(x=>x.SkillID)
+    <br />
+    @Html.Label("Yetenek Başlığı")
+    @Html.TextBoxFor(x=>x.Title,new{@class="form-control"})
+    <br />
+    @Html.TextBoxFor(x=>x.Value,new{@class="form-control"})
+    <br />
+    <button class="btn btn-success">Güncelle</button>
+}
+
