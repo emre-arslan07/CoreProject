@@ -65,19 +65,29 @@ builder.Services.AddScoped<IMessageService,MessageManager>();
 
 builder.Services.AddScoped<IUnitOfWorkDal, UnitOfWorkDal>();
 
-builder.Services.AddScoped <GetAllFeatureQueryHandler>();
+builder.Services.AddScoped<GetAllFeatureQueryHandler>();
 builder.Services.AddScoped<GetAllAboutQueryHandler>();
 builder.Services.AddScoped<GetAllServiceQueryHandler>();
 builder.Services.AddScoped<GetAllContactQueryHandler>();
-builder.Services.AddScoped<GetAllExperienceQueryHandler>();
 builder.Services.AddScoped<GetAllPortfolioQueryHandler>();
-builder.Services.AddScoped<GetAllSkillQueryHandler>();
 builder.Services.AddScoped<GetAllSocialMediaQueryHandler>();
 builder.Services.AddScoped<GetAllTestimonialQueryHandler>();
 builder.Services.AddScoped<SendMessageCommandHandler>();
+
+builder.Services.AddScoped<GetAllSkillQueryHandler>();
 builder.Services.AddScoped<DeleteSkillCommandHandler>();
 builder.Services.AddScoped<AddSkillCommandHandler>();
+builder.Services.AddScoped<UpdateSkillCommandHandler>();
 builder.Services.AddScoped<GetSkillByIdCommandHandler>();
+
+
+builder.Services.AddScoped<GetAllExperienceQueryHandler>();
+builder.Services.AddScoped<GetExperienceByIdCommandHandler>();
+builder.Services.AddScoped<AddExperienceCommandHandler>();
+builder.Services.AddScoped<DeleteExperienceCommandHandler>();
+builder.Services.AddScoped<UpdateExperienceCommandHandler>();
+
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
