@@ -12,17 +12,28 @@
     <br />
     @Html.Label("Proje Başlığı")
     @Html.TextBoxFor(x=>x.Name,new{@class="form-control"})
+    @Html.ValidationMessageFor(x=>x.Name,"", new{@class="text-danger"})
     <br />
     @Html.Label("Görsel 1")
     @Html.TextBoxFor(x=>x.ImageUrl,new{@class="form-control"})
+    @Html.ValidationMessageFor(x => x.ImageUrl, "", new { @class = "text-danger" })
     <br />
     @Html.Label("Görsel 2")
     @Html.TextBoxFor(x=>x.ImageUrl2,new{@class="form-control"})
+    @Html.ValidationMessageFor(x => x.ImageUrl2, "", new { @class = "text-danger" })
     <br />
     @Html.Label("Proje Url ")
     @Html.TextBoxFor(x=>x.ProjectUrl,new{@class="form-control"})
+    @Html.ValidationMessageFor(x => x.ProjectUrl, "", new { @class = "text-danger" })
     <br />
-   
+    @Html.Label("Fiyat ")
+    @Html.TextBoxFor(x => x.Price, new { @class = "form-control" })
+    @Html.ValidationMessageFor(x => x.Price, "", new { @class = "text-danger" })
+    <br />
+    @Html.Label("Tamamlanma Oranı ")
+    @Html.TextBoxFor(x => x.Value, new { @class = "form-control" })
+    @Html.ValidationMessageFor(x => x.Value, "", new { @class = "text-danger" })
+    <br />
     <button class="btn btn-success">Ekle</button>
 }
 
