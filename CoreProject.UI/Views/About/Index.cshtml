@@ -1,14 +1,19 @@
 ﻿@model AboutVM
 @{
     ViewData["Title"] = "Index";
-    Layout = "~/Views/Main/_AdminLayout.cshtml";
+    Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
 }
 
 <div class="card-header border-0">
     <h3>Hakkımda Düzenleme Sayfası</h3>
 </div>
+
 @using (Html.BeginForm("Index", "About", FormMethod.Post))
 {
+    
+    <div class="col-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
     @Html.HiddenFor(x => x.AboutID)
     <br />
     @Html.Label("Başlık")
@@ -32,5 +37,10 @@
     @Html.Label("Açıklama")
     @Html.TextAreaFor(x => x.Description,10,2, new { @class = "form-control" })
     <br />
-    <button class="btn btn-success">Güncelle</button>
+    <button class="btn btn-outline-success">Kaydet</button>
+
+            </div>
+        </div>
+    </div>
 }
+

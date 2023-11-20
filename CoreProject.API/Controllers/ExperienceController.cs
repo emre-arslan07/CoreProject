@@ -29,6 +29,14 @@ namespace CoreProject.API.Controllers
             return Ok(values);
         }
 
+        [HttpGet]
+        [Route("GetExperienceCount")]
+        public async Task<IActionResult> GetExperienceCount()
+        {
+            var values = await _mediator.Send(new GetExperienceTotalCountQuery());
+            return Ok(values);
+        }
+
         [HttpPost]
         [Route("AddExperience")]
         public async Task<IActionResult> AddExperience(AddExperienceCommand addExperienceCommand)

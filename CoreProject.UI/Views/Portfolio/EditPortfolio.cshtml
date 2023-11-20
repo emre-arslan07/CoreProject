@@ -1,38 +1,46 @@
 ﻿@model PortfolioVM
 @{
     ViewData["Title"] = "EditPortfolio";
-    Layout = "~/Views/Main/_AdminLayout.cshtml";
+    Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
 }
 
 <div class="card-header border-0">
     <h3> Proje Düzenleme Sayfası</h3>
 </div>
-@using (Html.BeginForm("EditPortfolio", "Portfolio", FormMethod.Post))
-{
-    <br />
-    @Html.Label("Proje Başlığı")
-    @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
-    @Html.ValidationMessageFor(x => x.Name, "", new { @class = "text-danger" })
-    <br />
-    @Html.Label("Görsel 1")
-    @Html.TextBoxFor(x => x.ImageUrl, new { @class = "form-control" })
-    @Html.ValidationMessageFor(x => x.ImageUrl, "", new { @class = "text-danger" })
-    <br />
-    @Html.Label("Görsel 2")
-    @Html.TextBoxFor(x => x.ImageUrl2, new { @class = "form-control" })
-    @Html.ValidationMessageFor(x => x.ImageUrl2, "", new { @class = "text-danger" })
-    <br />
-    @Html.Label("Proje Url ")
-    @Html.TextBoxFor(x => x.ProjectUrl, new { @class = "form-control" })
-    @Html.ValidationMessageFor(x => x.ProjectUrl, "", new { @class = "text-danger" })
-    <br />
-    @Html.Label("Fiyat ")
-    @Html.TextBoxFor(x => x.Price, new { @class = "form-control" })
-    @Html.ValidationMessageFor(x => x.Price, "", new { @class = "text-danger" })
-    <br />
-    @Html.Label("Tamamlanma Oranı ")
-    @Html.TextBoxFor(x => x.Value, new { @class = "form-control" })
-    @Html.ValidationMessageFor(x => x.Value, "", new { @class = "text-danger" })
-    <br />
-    <button class="btn btn-success">Kaydet</button>
-}
+
+<div class="col-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            @using (Html.BeginForm("EditPortfolio", "Portfolio", FormMethod.Post))
+            {
+                <br />
+                @Html.Label("Proje Başlığı")
+                @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.Name, "", new { @class = "text-danger" })
+                <br />
+                @Html.Label("Görsel 1")
+                @Html.TextBoxFor(x => x.ImageUrl, new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.ImageUrl, "", new { @class = "text-danger" })
+                <br />
+                @Html.Label("Görsel 2")
+                @Html.TextBoxFor(x => x.ImageUrl2, new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.ImageUrl2, "", new { @class = "text-danger" })
+                <br />
+                @Html.Label("Proje Url ")
+                @Html.TextBoxFor(x => x.ProjectUrl, new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.ProjectUrl, "", new { @class = "text-danger" })
+                <br />
+                @Html.Label("Fiyat ")
+                @Html.TextBoxFor(x => x.Price, new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.Price, "", new { @class = "text-danger" })
+                <br />
+                @Html.Label("Tamamlanma Oranı ")
+                @Html.TextBoxFor(x => x.Value, new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.Value, "", new { @class = "text-danger" })
+                <br />
+                <button class="btn btn-outline-success">Kaydet</button>
+            }
+
+        </div>
+    </div>
+</div>

@@ -1,49 +1,47 @@
 ﻿@model List<ExperienceVM>
 @{
     ViewData["Title"] = "Index";
-    Layout = "~/Views/Main/_AdminLayout.cshtml";
+    Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
     int i = 0;
 }
 
 <div class="card-header border-0">
     <h3 class="mb-0">
-        Deneyim Listesi     <a href="/Experience/AddExperience/" class="btn btn-primary">Ekle</a>
+        Deneyim Listesi    <a href="/Experience/AddExperience/" class="btn btn-outline-primary">Ekle</a>
     </h3>
 </div>
-<!-- Light table -->
-<div class="table-responsive">
-    <table class="table align-items-center table-flush">
-        <thead class="thead-light">
-            <tr>
-                <th scope="col" class="sort" data-sort="name">#</th>
-                <th scope="col" class="sort" data-sort="budget">Başlık</th>
-                <th scope="col" class="sort" data-sort="status">Tarih</th>
-                <th scope="col">Sil</th>
-                <th scope="col" class="sort" data-sort="completion">Düzenle</th>
-                <th scope="col"></th>
-            </tr>
-        </thead>
-        <tbody class="list">
-            @foreach (var item in Model)
-            {
-                i++;
 
-                <tr>
-                    <td><strong>@i</strong></td>
-                    <td class="budget">
-                        @item.Name
-                    </td>
-                   <td>
-                       @item.Date
-                   </td>
-
-                    <td><a href="/Experience/DeleteExperience/@item.ExprerienceID" class="btn btn-danger">Sil</a></td>
-                    <td><a href="/Experience/EditExperience/@item.ExprerienceID" class="btn btn-info">Güncelle</a></td>
-                </tr>
-            }
-
-        </tbody>
-    </table>
-    <br />
+<div class="col-lg-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">           
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Başlık</th>
+                            <th>Tarih</th>
+                            <th>Sil</th>
+                            <th>Düzenle</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            i++;
+                            <tr>
+                            <td>@i</td>
+                            <td>@item.Name</td>
+                            <td>@item.Date</td>
+                                <td><a href="/Experience/DeleteExperience/@item.ExprerienceID" class="btn btn-outline-danger">Sil</a></td>
+                                <td><a href="/Experience/EditExperience/@item.ExprerienceID" class="btn btn-outline-warning">Güncelle</a></td>
+                        </tr>
+                            
+                        }
+                       
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
-

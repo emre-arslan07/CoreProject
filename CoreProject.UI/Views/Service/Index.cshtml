@@ -1,43 +1,51 @@
 ﻿@model List<ServiceVM>
 @{
     ViewData["Title"] = "Index";
-    Layout = "~/Views/Main/_AdminLayout.cshtml";
+    Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
     int i = 0;
 }
 
 <div class="card-header border-0">
     <h3 class="mb-0">
-        Deneyim Listesi     <a href="/Service/AddService/" class="btn btn-primary">Ekle</a>
+        Deneyim Listesi     <a href="/Service/AddService/" class="btn btn-outline-primary">Ekle</a>
     </h3>
 </div>
 <!-- Light table -->
-<div class="table-responsive">
-    <table class="table align-items-center table-flush">
-        <thead class="thead-light">
-            <tr>
-                <th scope="col" class="sort" data-sort="name">#</th>
-                <th scope="col" class="sort" data-sort="budget">Başlık</th>
-                <th scope="col">Sil</th>
-                <th scope="col" class="sort" data-sort="completion">Düzenle</th>
-                <th scope="col"></th>
-            </tr>
-        </thead>
-        <tbody class="list">
-            @foreach (var item in Model)
-            {
-                i++;
 
-                <tr>
-                    <td><strong>@i</strong></td>
-                    <td class="budget">
-                        @item.Title
-                    </td>
-                    <td><a href="/Service/DeleteService/@item.ServiceID" class="btn btn-danger">Sil</a></td>
-                    <td><a href="/Service/EditService/@item.ServiceID" class="btn btn-info">Güncelle</a></td>
-                </tr>
-            }
+<div class="col-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table align-items-center table-flush">
+                    <thead >
+                        <tr>
+                            <th scope="col" class="sort" data-sort="name">#</th>
+                            <th scope="col" class="sort" data-sort="budget">Başlık</th>
+                            <th scope="col">Sil</th>
+                            <th scope="col" class="sort" data-sort="completion">Düzenle</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody class="list">
+                        @foreach (var item in Model)
+                        {
+                            i++;
 
-        </tbody>
-    </table>
-    <br />
+                            <tr>
+                                <td><strong>@i</strong></td>
+                                <td class="budget">
+                                    @item.Title
+                                </td>
+                                <td><a href="/Service/DeleteService/@item.ServiceID" class="btn btn-outline-danger">Sil</a></td>
+                                <td><a href="/Service/EditService/@item.ServiceID" class="btn btn-outline-warning">Güncelle</a></td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+                <br />
+            </div>
+
+        </div>
+    </div>
 </div>

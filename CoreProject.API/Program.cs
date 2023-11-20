@@ -76,6 +76,7 @@ builder.Services.AddScoped<DeleteSkillCommandHandler>();
 builder.Services.AddScoped<AddSkillCommandHandler>();
 builder.Services.AddScoped<UpdateSkillCommandHandler>();
 builder.Services.AddScoped<GetSkillByIdCommandHandler>();
+builder.Services.AddScoped<GetSkillTotalCountQueryHandler>();
 
 
 builder.Services.AddScoped<GetAllExperienceQueryHandler>();
@@ -83,6 +84,7 @@ builder.Services.AddScoped<GetExperienceByIdCommandHandler>();
 builder.Services.AddScoped<AddExperienceCommandHandler>();
 builder.Services.AddScoped<DeleteExperienceCommandHandler>();
 builder.Services.AddScoped<UpdateExperienceCommandHandler>();
+builder.Services.AddScoped<GetExperienceTotalCountQueryHandler>();
 
 builder.Services.AddScoped<GetAllPortfolioQueryHandler>();
 builder.Services.AddScoped<GetPortfolioByIdQueryHandler>();
@@ -100,7 +102,9 @@ builder.Services.AddScoped<DeleteServiceCommandHandler>();
 builder.Services.AddScoped<UpdateServiceCommandHandler>();
 builder.Services.AddScoped<GetServiceByIdQueryHandler>();
 
-
+builder.Services.AddScoped<GetMessageTotalCountQueryHandler>();
+builder.Services.AddScoped<GetTrueMessageTotalCountQueryHandler>();
+builder.Services.AddScoped<GetFalseMessageTotalCountQueryHandler>();
 
 
 

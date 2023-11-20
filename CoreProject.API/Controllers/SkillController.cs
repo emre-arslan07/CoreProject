@@ -28,6 +28,14 @@ namespace CoreProject.API.Controllers
             return Ok(values);
         }
 
+        [HttpGet]
+        [Route("GetSkillCount")]
+        public async Task<IActionResult> GetSkillCount()
+        {
+            var values = await _mediator.Send(new GetSkillTotalCountQuery());
+            return Ok(values);
+        }
+
         [HttpPost]
         [Route("AddSkill")]
         public async Task<IActionResult> AddSkill(AddSkillCommand addSkillCommand)
