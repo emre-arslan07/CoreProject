@@ -66,7 +66,6 @@ builder.Services.AddScoped<IMessageService,MessageManager>();
 builder.Services.AddScoped<IUnitOfWorkDal, UnitOfWorkDal>();
 
 builder.Services.AddScoped<GetAllAboutQueryHandler>();
-builder.Services.AddScoped<GetAllServiceQueryHandler>();
 builder.Services.AddScoped<GetAllContactQueryHandler>();
 builder.Services.AddScoped<GetAllSocialMediaQueryHandler>();
 builder.Services.AddScoped<GetAllTestimonialQueryHandler>();
@@ -94,6 +93,14 @@ builder.Services.AddScoped<UpdatePortfolioCommandHandler>();
 builder.Services.AddScoped<GetAllFeatureQueryHandler>();
 builder.Services.AddScoped<GetFeatureByIdQueryHandler>();
 builder.Services.AddScoped<UpdateFeatureCommandHandler>();
+
+builder.Services.AddScoped<GetAllServiceQueryHandler>();
+builder.Services.AddScoped<AddServiceCommandHandler>();
+builder.Services.AddScoped<DeleteServiceCommandHandler>();
+builder.Services.AddScoped<UpdateServiceCommandHandler>();
+builder.Services.AddScoped<GetServiceByIdQueryHandler>();
+
+
 
 
 

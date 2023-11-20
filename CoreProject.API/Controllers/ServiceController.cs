@@ -1,7 +1,7 @@
 ﻿using CoreProject.API.CQRS.Commands.ExperienceCommand;
-using CoreProject.API.CQRS.Commands.SkillCommand;
+using CoreProject.API.CQRS.Commands.ServiceCommand;
 using CoreProject.API.CQRS.Queries.ExperienceQuery;
-using CoreProject.API.CQRS.Queries.SkillQuery;
+using CoreProject.API.CQRS.Queries.ServiceQuery;
 using MediatR;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
@@ -12,35 +12,35 @@ namespace CoreProject.API.Controllers
     [EnableCors]
     [Route("api/[controller]")]
     [ApiController]
-    public class ExperienceController : ControllerBase
+    public class ServiceController : ControllerBase
     {
         private readonly IMediator _mediator;
 
-        public ExperienceController(IMediator mediator)
+        public ServiceController(IMediator mediator)
         {
             _mediator = mediator;
         }
 
         [HttpGet]
-        [Route("GetExperience")]
-        public async Task<IActionResult> GetExperience()
+        [Route("GetService")]
+        public async Task<IActionResult> GetService()
         {
-            var values = await _mediator.Send(new GetAllExperienceQuery());
+            var values = await _mediator.Send(new GetAllServiceQuery());
             return Ok(values);
         }
-
+        
         [HttpPost]
-        [Route("AddExperience")]
-        public async Task<IActionResult> AddExperience(AddExperienceCommand addExperienceCommand)
+        [Route("AddService")]
+        public async Task<IActionResult> AddService(AddServiceCommand addServiceCommand )
         {
-            var values = await _mediator.Send(addExperienceCommand);
+            var values = await _mediator.Send(addServiceCommand);
             return Ok(values);
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteExperience(int id)
+        public async Task<IActionResult> DeleteService(int id)
         {
-            var values = await _mediator.Send(new DeleteExperienceCommand(id));
+            var values = await _mediator.Send(new DeleteServiceCommand(id));
             if (values == false)
             {
                 return NotFound();
@@ -54,7 +54,7 @@ namespace CoreProject.API.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetSkillById(int id)
         {
-            var values = await _mediator.Send(new GetExperienceByIdQuery(id));
+            var values = await _mediator.Send(new GetServiceByIdQuery(id));
             if (values == null)
             {
                 return NotFound();
@@ -66,9 +66,9 @@ namespace CoreProject.API.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateExperience(UpdateExperienceCommand updateExperienceCommand)
+        public async Task<IActionResult> UpdateService(UpdateServiceCommand updateServiceCommand )
         {
-            var values = await _mediator.Send(updateExperienceCommand);
+            var values = await _mediator.Send(updateServiceCommand);
             if (values == false)
             {
                 return NotFound(values);
@@ -78,6 +78,5 @@ namespace CoreProject.API.Controllers
                 return Ok(values);
             }
         }
-
     }
 }
