@@ -1,6 +1,7 @@
 ﻿using CoreProject.API.CQRS.Commands.ExperienceCommand;
 using CoreProject.API.CQRS.Commands.ServiceCommand;
 using CoreProject.API.CQRS.Queries.ExperienceQuery;
+using CoreProject.API.CQRS.Queries.PortfolioQuery;
 using CoreProject.API.CQRS.Queries.ServiceQuery;
 using MediatR;
 using Microsoft.AspNetCore.Cors;
@@ -28,7 +29,13 @@ namespace CoreProject.API.Controllers
             var values = await _mediator.Send(new GetAllServiceQuery());
             return Ok(values);
         }
-        
+        [HttpGet]
+        [Route("GetServiceCount")]
+        public async Task<IActionResult> GetServiceCount()
+        {
+            var values = await _mediator.Send(new GetServiceTotalCountQuery());
+            return Ok(values);
+        }
         [HttpPost]
         [Route("AddService")]
         public async Task<IActionResult> AddService(AddServiceCommand addServiceCommand )

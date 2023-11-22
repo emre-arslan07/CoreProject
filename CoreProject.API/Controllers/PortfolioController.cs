@@ -29,6 +29,20 @@ namespace CoreProject.API.Controllers
             var values = await _mediator.Send(new GetAllPortfolioQuery());
             return Ok(values);
         }
+        [HttpGet]
+        [Route("GetPortfolioCount")]
+        public async Task<IActionResult> GetPortfolioCount()
+        {
+            var values = await _mediator.Send(new GetPortfolioTotalCountQuery());
+            return Ok(values);
+        }
+        [HttpGet]
+        [Route("GetLast5Portfolio")]
+        public async Task<IActionResult> GetLast5Portfolio()
+        {
+            var values = await _mediator.Send(new GetLas5PortfolioQuery());
+            return Ok(values);
+        }
 
         [HttpPost]
         [Route("AddPortfolio")]

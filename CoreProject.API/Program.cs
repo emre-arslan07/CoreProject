@@ -91,6 +91,8 @@ builder.Services.AddScoped<GetPortfolioByIdQueryHandler>();
 builder.Services.AddScoped<AddPortfolioCommandHandler>();
 builder.Services.AddScoped<DeletePortfolioCommandHandler>();
 builder.Services.AddScoped<UpdatePortfolioCommandHandler>();
+builder.Services.AddScoped<GetLast5PortfolioQueryHandler>();
+builder.Services.AddScoped<GetPortfolioTotalCountQueryHandler>();
 
 builder.Services.AddScoped<GetAllFeatureQueryHandler>();
 builder.Services.AddScoped<GetFeatureByIdQueryHandler>();
@@ -101,6 +103,7 @@ builder.Services.AddScoped<AddServiceCommandHandler>();
 builder.Services.AddScoped<DeleteServiceCommandHandler>();
 builder.Services.AddScoped<UpdateServiceCommandHandler>();
 builder.Services.AddScoped<GetServiceByIdQueryHandler>();
+builder.Services.AddScoped<GetServiceTotalCountQueryHandler>();
 
 builder.Services.AddScoped<GetMessageTotalCountQueryHandler>();
 builder.Services.AddScoped<GetTrueMessageTotalCountQueryHandler>();
