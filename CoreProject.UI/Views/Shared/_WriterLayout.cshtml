@@ -1,0 +1,59 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+@await Html.PartialAsync("/Areas/Writer/Views/Default/_HeaderPartial.cshtml")
+<body>
+  <div class="container-scroller">
+    <!-- partial:../../partials/_navbar.html -->
+        @await Html.PartialAsync("/Areas/Writer/Views/Default/_NavBarPartial.cshtml")
+
+
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+      <!-- partial:../../partials/_settings-panel.html -->
+      <!-- partial -->
+      <!-- partial:../../partials/_sidebar.html -->
+
+      @await Html.PartialAsync("/Areas/Writer/Views/Default/_SideBarPartial.cshtml")
+
+      <!-- partial -->
+      <div class="main-panel">
+        <div class="content-wrapper">
+          <div class="row">
+            
+
+         @RenderBody()
+          </div>
+        </div>
+        <!-- content-wrapper ends -->
+        <!-- partial:../../partials/_footer.html -->
+                @await Html.PartialAsync("/Areas/Writer/Views/Default/_FooterPartial.cshtml")
+
+        <!-- partial -->
+      </div>
+      <!-- main-panel ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
+  </div>
+  <!-- container-scroller -->
+  <!-- plugins:js -->
+    <script src="~/skydash/vendors/js/vendor.bundle.base.js"></script>
+  <!-- endinject -->
+  <!-- Plugin js for this page -->
+  <!-- End plugin js for this page -->
+  <!-- inject:js -->
+  <script src="~/skydash/js/off-canvas.js"></script>
+  <script src="~/skydash/js/hoverable-collapse.js"></script>
+    <script src="~/skydash/js/template.js"></script>
+    <script src="~/skydash/js/settings.js"></script>
+    <script src="~/skydash/js/todolist.js"></script>
+  <!-- endinject -->
+  <!-- Custom js for this page-->
+  <!-- End custom js for this page-->
+</body>
+
+</html>

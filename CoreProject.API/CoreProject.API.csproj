@@ -7,7 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>   
-    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.1.0" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.1.0" />   
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />   
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.0">
       <PrivateAssets>all</PrivateAssets>
@@ -25,6 +27,10 @@
     <ProjectReference Include="..\CoreProject.BLL\CoreProject.BLL.csproj" />
     <ProjectReference Include="..\CoreProject.DAL\CoreProject.DAL.csproj" />
     <ProjectReference Include="..\CoreProject.Entity\CoreProject.Entity.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="CQRS\Results\AppUserResult\" />
   </ItemGroup>
 
 </Project>

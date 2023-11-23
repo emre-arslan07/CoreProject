@@ -20,6 +20,7 @@ using CoreProject.API.CQRS.Handlers.SkillHandler;
 using CoreProject.API.CQRS.Handlers.SocialMediaHandler;
 using CoreProject.API.CQRS.Handlers.TestimonialHandler;
 using CoreProject.API.CQRS.Handlers.MessageHandler;
+using CoreProject.API.CQRS.Handlers.AppUserHandler;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +28,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
 builder.Services.AddDbContext<CoreProjectDbContext>();
+builder.Services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<CoreProjectDbContext>().AddEntityFrameworkStores<CoreProjectDbContext>();
+
 
 builder.Services.AddScoped<IFeatureDal, EFFeatureDal>();
 builder.Services.AddScoped<IFeatureService, FeatureManager>();
@@ -60,6 +63,9 @@ builder.Services.AddScoped<ITestimonialService,TestimonialManager>();
 
 builder.Services.AddScoped<IMessageDal,EFMessageDal>();
 builder.Services.AddScoped<IMessageService,MessageManager>();
+
+builder.Services.AddScoped<IAppUserDal,EFAppUserDal>();
+builder.Services.AddScoped<IAppUserService,AppUserManager>();
 
 
 
@@ -109,7 +115,7 @@ builder.Services.AddScoped<GetMessageTotalCountQueryHandler>();
 builder.Services.AddScoped<GetTrueMessageTotalCountQueryHandler>();
 builder.Services.AddScoped<GetFalseMessageTotalCountQueryHandler>();
 
-
+builder.Services.AddScoped<AppUserRegisterCommandHandler>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

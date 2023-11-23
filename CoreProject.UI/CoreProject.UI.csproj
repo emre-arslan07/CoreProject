@@ -49,6 +49,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\Writer\Data\" />
     <Folder Include="ViewComponents\Message\" />
     <Folder Include="Views\Shared\Components\Message\" />
   </ItemGroup>
