@@ -26,7 +26,6 @@ namespace CoreProject.UI.Areas.Writer.Controllers
                 var httpClient = new HttpClient();
                 var jsonBlog = JsonConvert.SerializeObject(userRegisterVM);
                 StringContent content = new StringContent(jsonBlog, Encoding.UTF8, "application/json");
-
                 var responseMessage = await httpClient.PostAsync("https://localhost:7111/api/AppUser/AppUserRegister",
                  content);
                 return RedirectToAction("Index","Login");
