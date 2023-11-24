@@ -1,8 +1,21 @@
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddHttpClient();
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
+
+//builder.Services.AddMvc(config =>
+//{
+//    var policy=new AuthorizationPolicyBuilder()
+//                .RequireAuthenticatedUser()
+//                .Build();
+//    config.Filters.Add(new AuthorizeFilter(policy));
+    
+//});
+//builder.Services.AddMvc();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -15,8 +28,8 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
 app.UseRouting();
+app.UseAuthentication();
 
 app.UseAuthorization();
 

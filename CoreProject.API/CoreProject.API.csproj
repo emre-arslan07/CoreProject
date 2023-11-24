@@ -29,8 +29,4 @@
     <ProjectReference Include="..\CoreProject.Entity\CoreProject.Entity.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="CQRS\Results\AppUserResult\" />
-  </ItemGroup>
-
 </Project>

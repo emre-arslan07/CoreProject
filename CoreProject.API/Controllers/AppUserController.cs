@@ -1,5 +1,6 @@
 ﻿using CoreProject.API.CQRS.Commands.AppUserCommand;
 using CoreProject.API.CQRS.Commands.ExperienceCommand;
+using CoreProject.API.CQRS.Queries.AppUserQuery;
 using MediatR;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
@@ -24,6 +25,21 @@ namespace CoreProject.API.Controllers
         {
             var values = await _mediator.Send(appUserRegisterCommand);
             return Ok(values);
+        }
+        [HttpPost]
+        [Route("AppUserLogin")]
+        public async Task<IActionResult> AppUserLogin(AppUserLoginQuery appUserLoginQuery )
+        {           
+            var values = await _mediator.Send(appUserLoginQuery);
+            if (values != null)
+            {
+            return Ok(values);
+
+            }
+            else
+            {
+                return BadRequest();
+            }
         }
     }
 }

@@ -116,6 +116,7 @@ builder.Services.AddScoped<GetTrueMessageTotalCountQueryHandler>();
 builder.Services.AddScoped<GetFalseMessageTotalCountQueryHandler>();
 
 builder.Services.AddScoped<AppUserRegisterCommandHandler>();
+builder.Services.AddScoped<AppUserLoginQueryHandler>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -149,6 +150,7 @@ if (app.Environment.IsDevelopment())
 app.UseRouting();
 app.UseCors("CoreProjectApiCors");
 app.UseHttpsRedirection();
+
 
 app.UseAuthorization();
 
