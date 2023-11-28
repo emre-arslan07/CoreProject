@@ -52,6 +52,7 @@
     <Folder Include="Areas\Writer\Data\" />
     <Folder Include="ViewComponents\Message\" />
     <Folder Include="Views\Shared\Components\Message\" />
+    <Folder Include="wwwroot\userimage\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -117,6 +118,11 @@
     <None Include="wwwroot\argon-dashboard-master\assets\vendor\gulp-copy\node_modules\yargs\lib\validation.js" />
     <None Include="wwwroot\argon-dashboard-master\assets\vendor\gulp-copy\node_modules\yargs\lib\yerror.js" />
     <None Include="wwwroot\argon-dashboard-master\assets\vendor\gulp-copy\node_modules\yargs\yargs.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CoreProject.DAL\CoreProject.DAL.csproj" />
+    <ProjectReference Include="..\CoreProject.Entity\CoreProject.Entity.csproj" />
   </ItemGroup>
 
 </Project>

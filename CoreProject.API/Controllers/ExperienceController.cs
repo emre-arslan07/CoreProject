@@ -60,7 +60,7 @@ namespace CoreProject.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetSkillById(int id)
+        public async Task<IActionResult> GetExperienceById(int id)
         {
             var values = await _mediator.Send(new GetExperienceByIdQuery(id));
             if (values == null)

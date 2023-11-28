@@ -21,6 +21,7 @@ using CoreProject.API.CQRS.Handlers.SocialMediaHandler;
 using CoreProject.API.CQRS.Handlers.TestimonialHandler;
 using CoreProject.API.CQRS.Handlers.MessageHandler;
 using CoreProject.API.CQRS.Handlers.AppUserHandler;
+using CoreProject.API.CQRS.Handlers.AnnouncementHandler;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -66,6 +67,9 @@ builder.Services.AddScoped<IMessageService,MessageManager>();
 
 builder.Services.AddScoped<IAppUserDal,EFAppUserDal>();
 builder.Services.AddScoped<IAppUserService,AppUserManager>();
+
+builder.Services.AddScoped<IAnnouncementDal,EFAnnouncementDal>();
+builder.Services.AddScoped<IAnnouncementService,AnnouncementManager>();
 
 
 
@@ -117,6 +121,11 @@ builder.Services.AddScoped<GetFalseMessageTotalCountQueryHandler>();
 
 builder.Services.AddScoped<AppUserRegisterCommandHandler>();
 builder.Services.AddScoped<AppUserLoginQueryHandler>();
+builder.Services.AddScoped<GetUserTotalCountQueryHandler>();
+
+builder.Services.AddScoped<GetAllAnnouncementQueryHandler>();
+builder.Services.AddScoped<GetAnnouncementByIdQueryHandler>();
+builder.Services.AddScoped<GetAnnouncementTotalCountQueryHandler>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -151,7 +160,7 @@ app.UseRouting();
 app.UseCors("CoreProjectApiCors");
 app.UseHttpsRedirection();
 
-
+//app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseEndpoints(endpoints =>

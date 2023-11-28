@@ -1,10 +1,14 @@
 ﻿using CoreProject.API.CQRS.Commands.AppUserCommand;
 using CoreProject.API.CQRS.Commands.ExperienceCommand;
+using CoreProject.API.CQRS.Queries.AnnouncementQuery;
 using CoreProject.API.CQRS.Queries.AppUserQuery;
 using MediatR;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace CoreProject.API.Controllers
 {
@@ -28,18 +32,28 @@ namespace CoreProject.API.Controllers
         }
         [HttpPost]
         [Route("AppUserLogin")]
-        public async Task<IActionResult> AppUserLogin(AppUserLoginQuery appUserLoginQuery )
-        {           
+        public async Task<IActionResult> AppUserLogin(AppUserLoginQuery appUserLoginQuery)
+        {
             var values = await _mediator.Send(appUserLoginQuery);
             if (values != null)
             {
-            return Ok(values);
+                return Ok(values);
 
             }
             else
             {
-                return BadRequest();
+                return BadRequest("Kullanıcı adı veya şifre yanlış");
             }
         }
+
+        [HttpGet]
+        [Route("GetUserCount")]
+        public async Task<IActionResult> GetUserCount()
+        {
+            var values = await _mediator.Send(new GetUserTotalCountQuery());
+            return Ok(values);
+        }
+
+
     }
 }
