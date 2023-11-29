@@ -40,5 +40,12 @@ namespace CoreProject.API.Controllers
             var values = await _mediator.Send(new GetAnnouncementTotalCountQuery());
             return Ok(values);
         }
+        [HttpGet]
+        [Route("GetLast5Announcement")]
+        public async Task<IActionResult> GetLast5Announcement()
+        {
+            var values = await _mediator.Send(new GetLast5AnnoucementQuery());
+            return Ok(values);
+        }
     }
 }

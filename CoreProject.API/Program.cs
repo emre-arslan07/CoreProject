@@ -22,6 +22,7 @@ using CoreProject.API.CQRS.Handlers.TestimonialHandler;
 using CoreProject.API.CQRS.Handlers.MessageHandler;
 using CoreProject.API.CQRS.Handlers.AppUserHandler;
 using CoreProject.API.CQRS.Handlers.AnnouncementHandler;
+using CoreProject.API.CQRS.Handlers.WriterMessage;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -70,6 +71,9 @@ builder.Services.AddScoped<IAppUserService,AppUserManager>();
 
 builder.Services.AddScoped<IAnnouncementDal,EFAnnouncementDal>();
 builder.Services.AddScoped<IAnnouncementService,AnnouncementManager>();
+
+builder.Services.AddScoped<IWriterMessageDal, EFWriterMessageDal>();
+builder.Services.AddScoped<IWriterMessageService, WriterMessageManager>();
 
 
 
@@ -126,6 +130,10 @@ builder.Services.AddScoped<GetUserTotalCountQueryHandler>();
 builder.Services.AddScoped<GetAllAnnouncementQueryHandler>();
 builder.Services.AddScoped<GetAnnouncementByIdQueryHandler>();
 builder.Services.AddScoped<GetAnnouncementTotalCountQueryHandler>();
+builder.Services.AddScoped<GetLast5AnnoucementQueryHandler>();
+
+builder.Services.AddScoped<WriterMessageInboxQueryHandler>();
+builder.Services.AddScoped<WriterMessageSendboxQueryHandler>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
