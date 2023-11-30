@@ -27,10 +27,10 @@
                             <tr>
                                 <td>@i</td>
                                 <td>@item.Subject</td>
-                                <td>@item.Sender</td>
+                                <td>@item.Receiver</td>
                                 <td>@(((DateTime)item.Date).ToString("dd-MMM-yyyy"))</td>
 
-                                <td><a href="/Writer/Message/MessageDetail/@item.WriterMessageID" class="btn btn-outline-primary">Detaylar</a></td>
+                                <td><a href="/Writer/Message/SendboxMessageDetails/@item.WriterMessageID" class="btn btn-outline-primary">Detaylar</a></td>
                             </tr>
                         }
 

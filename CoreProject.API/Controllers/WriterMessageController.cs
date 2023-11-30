@@ -1,4 +1,6 @@
-﻿using CoreProject.API.CQRS.Queries.AnnouncementQuery;
+﻿using CoreProject.API.CQRS.Commands.MessageCommand;
+using CoreProject.API.CQRS.Commands.WriterMessageCommand;
+using CoreProject.API.CQRS.Queries.AnnouncementQuery;
 using CoreProject.API.CQRS.Queries.WriterMessage;
 using MediatR;
 using Microsoft.AspNetCore.Cors;
@@ -30,6 +32,25 @@ namespace CoreProject.API.Controllers
         public async Task<IActionResult> GetMessageSendbox(string mail)
         {
             var values = await _mediator.Send(new WriterMessageSendboxQuery(mail));
+            return Ok(values);
+        }
+        [HttpGet("GetWriterMessageById/{id}")]
+        public async Task<IActionResult> GetWriterMessageById(int id)
+        {
+            var values = await _mediator.Send(new GetWriterMessageByIdQuery(id));
+            return Ok(values);
+        }
+        [HttpPost]
+        [Route("SendWriterMessage")]
+        public async Task<IActionResult> SendWriterMessage(SendWriterMessageCommand sendWriterMessageCommand)
+        {
+            var values = await _mediator.Send(sendWriterMessageCommand);
+            return Ok(values);
+        }
+        [HttpGet("GetWriterMessageInboxCount/{mail}")]
+        public async Task<IActionResult> GetWriterMessageInboxCount(string mail)
+        {
+            var values = await _mediator.Send(new GetWriterMessageInboxCountQuery(mail));
             return Ok(values);
         }
     }

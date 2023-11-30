@@ -23,6 +23,7 @@ using CoreProject.API.CQRS.Handlers.MessageHandler;
 using CoreProject.API.CQRS.Handlers.AppUserHandler;
 using CoreProject.API.CQRS.Handlers.AnnouncementHandler;
 using CoreProject.API.CQRS.Handlers.WriterMessage;
+using CoreProject.API.CQRS.Commands.WriterMessageCommand;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -134,6 +135,9 @@ builder.Services.AddScoped<GetLast5AnnoucementQueryHandler>();
 
 builder.Services.AddScoped<WriterMessageInboxQueryHandler>();
 builder.Services.AddScoped<WriterMessageSendboxQueryHandler>();
+builder.Services.AddScoped<GetWriterMessageByIdQueryHandler>();
+builder.Services.AddScoped<SendWriterMessageCommandHandler>();
+builder.Services.AddScoped<GetWriterMessageInboxCountQueryHandler>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

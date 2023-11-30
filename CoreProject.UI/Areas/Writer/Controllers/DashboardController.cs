@@ -29,9 +29,13 @@ namespace CoreProject.UI.Areas.Writer.Controllers
             string connection = "https://api.openweathermap.org/data/2.5/weather?q=istanbul&mode=xml&lang=tr&units=metric&appid=" + apiKey;
             XDocument xDocument= XDocument.Load(connection);
             ViewBag.Tempreture = xDocument.Descendants("temperature").ElementAt(0).Attribute("value").Value.Substring(0,2);
-            @ViewBag.InboxCount = 0;
 
             var httpClient = new HttpClient();
+            var responseMessage1 = await httpClient.GetAsync($"https://localhost:7111/api/WriterMessage/GetWriterMessageInboxCount/{values.Email}");
+            var jsonString1 = await responseMessage1.Content.ReadAsStringAsync();
+            var values1 = JsonConvert.DeserializeObject<int>(jsonString1);
+            ViewBag.InboxCount = values1;
+
             var responseMessage2 = await httpClient.GetAsync("https://localhost:7111/api/Announcement/GetAnnouncementCount");
             var jsonString2 = await responseMessage2.Content.ReadAsStringAsync();
             var values2 = JsonConvert.DeserializeObject<int>(jsonString2);

@@ -28,6 +28,8 @@ namespace CoreProject.UI.Areas.Writer.Controllers
         public async Task<IActionResult> Index(UserEditVM userEditVM)
         {
             var uservalues = await _userManager.FindByNameAsync(User.Identity.Name);
+            uservalues.Name = userEditVM.Name;
+            uservalues.Surname = userEditVM.Surname;
             if (userEditVM.Picture!=null) 
             {
                 var resource = Directory.GetCurrentDirectory();
@@ -38,10 +40,20 @@ namespace CoreProject.UI.Areas.Writer.Controllers
                 await userEditVM.Picture.CopyToAsync(stream);
                 uservalues.ImageUrl = imageName;
             }
-            uservalues.Name=userEditVM.Name;
-            uservalues.Surname=userEditVM.Surname;
-            uservalues.PasswordHash = _userManager.PasswordHasher.HashPassword(uservalues, userEditVM.Password);
-            var result=await _userManager.UpdateAsync(uservalues);
+            else
+            {
+                uservalues.ImageUrl = uservalues.ImageUrl;
+            }
+            if (userEditVM.Password==null || userEditVM.PasswordConfirm==null)
+            {
+                uservalues.PasswordHash = uservalues.PasswordHash;
+            }
+            else
+            {               
+                uservalues.PasswordHash = _userManager.PasswordHasher.HashPassword(uservalues, userEditVM.Password);
+            }
+                var result = await _userManager.UpdateAsync(uservalues);
+            
             if (result.Succeeded)
             {
                 return RedirectToAction("Index", "Login");

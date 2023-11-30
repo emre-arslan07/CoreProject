@@ -66,7 +66,6 @@ namespace CoreProject.UI.Areas.Writer.Controllers
             //return View();
 
         }
-        [HttpPost]
         public async Task<IActionResult> LogOut()
         {
             await _signInManager.SignOutAsync();
