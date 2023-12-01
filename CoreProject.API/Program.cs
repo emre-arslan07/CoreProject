@@ -83,7 +83,6 @@ builder.Services.AddScoped<IUnitOfWorkDal, UnitOfWorkDal>();
 builder.Services.AddScoped<GetAllAboutQueryHandler>();
 builder.Services.AddScoped<GetAllContactQueryHandler>();
 builder.Services.AddScoped<GetAllSocialMediaQueryHandler>();
-builder.Services.AddScoped<GetAllTestimonialQueryHandler>();
 builder.Services.AddScoped<SendMessageCommandHandler>();
 
 builder.Services.AddScoped<GetAllSkillQueryHandler>();
@@ -123,6 +122,9 @@ builder.Services.AddScoped<GetServiceTotalCountQueryHandler>();
 builder.Services.AddScoped<GetMessageTotalCountQueryHandler>();
 builder.Services.AddScoped<GetTrueMessageTotalCountQueryHandler>();
 builder.Services.AddScoped<GetFalseMessageTotalCountQueryHandler>();
+builder.Services.AddScoped<GetAllMessageQueryHandler>();
+builder.Services.AddScoped<GetMessageByIdQueryHandler>();
+builder.Services.AddScoped<DeleteMessageCommandHandler>();
 
 builder.Services.AddScoped<AppUserRegisterCommandHandler>();
 builder.Services.AddScoped<AppUserLoginQueryHandler>();
@@ -138,6 +140,13 @@ builder.Services.AddScoped<WriterMessageSendboxQueryHandler>();
 builder.Services.AddScoped<GetWriterMessageByIdQueryHandler>();
 builder.Services.AddScoped<SendWriterMessageCommandHandler>();
 builder.Services.AddScoped<GetWriterMessageInboxCountQueryHandler>();
+
+builder.Services.AddScoped<GetAllTestimonialQueryHandler>();
+builder.Services.AddScoped<GetTestimonialByIdQueryHandler>();
+builder.Services.AddScoped<AddTestimonialCommandHandler>();
+builder.Services.AddScoped<DeleteTestimonialCommandHandler>();
+builder.Services.AddScoped<UpdateTestimonialCommandHandler>();
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

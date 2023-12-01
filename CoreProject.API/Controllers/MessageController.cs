@@ -1,4 +1,7 @@
-﻿using CoreProject.API.CQRS.Queries.ExperienceQuery;
+﻿using CoreProject.API.CQRS.Commands.MessageCommand;
+using CoreProject.API.CQRS.Commands.ServiceCommand;
+using CoreProject.API.CQRS.Queries.AnnouncementQuery;
+using CoreProject.API.CQRS.Queries.ExperienceQuery;
 using CoreProject.API.CQRS.Queries.MessageQuery;
 using MediatR;
 using Microsoft.AspNetCore.Cors;
@@ -40,6 +43,32 @@ namespace CoreProject.API.Controllers
         {
             var values = await _mediator.Send(new GetFalseMessageTotalQuery());
             return Ok(values);
+        }
+        [HttpGet]
+        [Route("GetAllMessage")]
+        public async Task<IActionResult> GetAllMessage()
+        {
+            var values = await _mediator.Send(new GetAllMessageQuery());
+            return Ok(values);
+        }
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetMessageById(int id)
+        {
+            var values = await _mediator.Send(new GetMessageByIdQuery(id));
+            return Ok(values);
+        }
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteMessage(int id)
+        {
+            var values = await _mediator.Send(new DeleteMessageCommand(id));
+            if (values == false)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return Ok(values);
+            }
         }
     }
 }
