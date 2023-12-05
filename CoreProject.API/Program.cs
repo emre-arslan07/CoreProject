@@ -24,6 +24,7 @@ using CoreProject.API.CQRS.Handlers.AppUserHandler;
 using CoreProject.API.CQRS.Handlers.AnnouncementHandler;
 using CoreProject.API.CQRS.Handlers.WriterMessage;
 using CoreProject.API.CQRS.Commands.WriterMessageCommand;
+using CoreProject.API.CQRS.Handlers.AdminMessage;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -124,6 +125,7 @@ builder.Services.AddScoped<GetFalseMessageTotalCountQueryHandler>();
 builder.Services.AddScoped<GetAllMessageQueryHandler>();
 builder.Services.AddScoped<GetMessageByIdQueryHandler>();
 builder.Services.AddScoped<DeleteMessageCommandHandler>();
+builder.Services.AddScoped<GetLast3MessageQueryHandler>();
 
 builder.Services.AddScoped<AppUserRegisterCommandHandler>();
 builder.Services.AddScoped<AppUserLoginQueryHandler>();
@@ -155,6 +157,13 @@ builder.Services.AddScoped<GetSocialMediaByIdQueryHandler>();
 builder.Services.AddScoped<AddSocialMediaCommandHandler>();
 builder.Services.AddScoped<DeleteSocialMediaCommandHandler>();
 builder.Services.AddScoped<UpdateSocialMediaCommandHandler>();
+
+builder.Services.AddScoped<GetLast3MessageInboxQueryHandler>();
+builder.Services.AddScoped<GetAdminMessageByIdQueryHandler>();
+builder.Services.AddScoped<GetAdminMessageInboxQueryHandler>();
+builder.Services.AddScoped<GetAdminMessageSendboxQueryHandler>();
+builder.Services.AddScoped<SendAdminMessageCommandHandler>();
+builder.Services.AddScoped<DeleteAdminMessageCommandHandler>();
 
 
 builder.Services.AddControllers();

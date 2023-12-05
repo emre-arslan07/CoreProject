@@ -51,6 +51,13 @@ namespace CoreProject.API.Controllers
             var values = await _mediator.Send(new GetAllMessageQuery());
             return Ok(values);
         }
+        [HttpGet]
+        [Route("GetLast3Message")]
+        public async Task<IActionResult> GetLast3Message()
+        {
+            var values = await _mediator.Send(new GetLast3MessageQuery());
+            return Ok(values);
+        }
         [HttpGet("{id}")]
         public async Task<IActionResult> GetMessageById(int id)
         {

@@ -23,7 +23,7 @@ namespace CoreProject.API.CQRS.Handlers.MessageHandler
                 Mail=request.Mail,
                 Name = request.Name,
                 Date = Convert.ToDateTime(DateTime.Now.ToShortDateString()),
-                Status = true
+                Status = false
             }) ;
 
             return Unit.Value;
