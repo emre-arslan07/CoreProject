@@ -81,7 +81,6 @@ builder.Services.AddScoped<IWriterMessageService, WriterMessageManager>();
 builder.Services.AddScoped<IUnitOfWorkDal, UnitOfWorkDal>();
 
 builder.Services.AddScoped<GetAllAboutQueryHandler>();
-builder.Services.AddScoped<GetAllContactQueryHandler>();
 builder.Services.AddScoped<GetAllSocialMediaQueryHandler>();
 builder.Services.AddScoped<SendMessageCommandHandler>();
 
@@ -146,6 +145,16 @@ builder.Services.AddScoped<GetTestimonialByIdQueryHandler>();
 builder.Services.AddScoped<AddTestimonialCommandHandler>();
 builder.Services.AddScoped<DeleteTestimonialCommandHandler>();
 builder.Services.AddScoped<UpdateTestimonialCommandHandler>();
+
+builder.Services.AddScoped<GetAllContactQueryHandler>();
+builder.Services.AddScoped<GetContactByIdQueryHandler>();
+builder.Services.AddScoped<UpdateContactCommandHandler>();
+
+builder.Services.AddScoped<GetAllSocialMediaQueryHandler>();
+builder.Services.AddScoped<GetSocialMediaByIdQueryHandler>();
+builder.Services.AddScoped<AddSocialMediaCommandHandler>();
+builder.Services.AddScoped<DeleteSocialMediaCommandHandler>();
+builder.Services.AddScoped<UpdateSocialMediaCommandHandler>();
 
 
 builder.Services.AddControllers();
