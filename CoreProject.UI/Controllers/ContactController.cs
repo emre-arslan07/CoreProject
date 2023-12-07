@@ -1,9 +1,11 @@
 ﻿using CoreProject.UI.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
 namespace CoreProject.UI.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class ContactController : Controller
     {
         public async Task<IActionResult> Index()

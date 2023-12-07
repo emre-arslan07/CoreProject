@@ -1,10 +1,12 @@
 ﻿using CoreProject.UI.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Text;
 
 namespace CoreProject.UI.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class FeatureController : Controller
     {
         [HttpGet]

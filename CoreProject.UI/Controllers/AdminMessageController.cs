@@ -1,6 +1,7 @@
 ﻿using CoreProject.Entity.Concrete;
 using CoreProject.UI.Areas.Writer.Models;
 using CoreProject.UI.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -8,6 +9,7 @@ using System.Text;
 
 namespace CoreProject.UI.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class AdminMessageController : Controller
     {
         private readonly UserManager<AppUser> _userManager;

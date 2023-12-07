@@ -1,11 +1,13 @@
 ﻿using CoreProject.Entity.Concrete;
 using CoreProject.UI.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Text;
 
 namespace CoreProject.UI.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class TestimonialController : Controller
     {
         public async Task<IActionResult> Index()
