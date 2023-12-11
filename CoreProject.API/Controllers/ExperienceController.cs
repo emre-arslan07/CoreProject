@@ -26,7 +26,7 @@ namespace CoreProject.API.Controllers
         public async Task<IActionResult> GetExperience()
         {
             var values = await _mediator.Send(new GetAllExperienceQuery());
-            return Ok(values);
+            return Ok(values.ToList());
         }
 
         [HttpGet]

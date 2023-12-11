@@ -33,7 +33,7 @@
                             <td>@i</td>
                             <td>@item.Name</td>
                             <td>@item.Date</td>
-                                <td><a href="/Experience/DeleteExperience/@item.ExprerienceID" class="btn btn-outline-danger">Sil</a></td>
+                                <td><a h@* ref="/Experience/DeleteExperience/@item.ExprerienceID" *@ data-id="@item.ExprerienceID" class="btn btn-outline-danger Delete">Sil</a></td>
                                 <td><a href="/Experience/EditExperience/@item.ExprerienceID" class="btn btn-outline-warning">Güncelle</a></td>
                         </tr>
                             
@@ -45,3 +45,48 @@
         </div>
     </div>
 </div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    $(".table").on("click", ".Delete", function () {
+        var btn = $(this); //tıklanan butonu yakalar
+        var id = btn.data("id"); //tıklanan datanın id özelliğini getirir
+        //var blogName = btn.data("value");
+        Swal.fire({
+            title: 'UYARI!',
+            text: "Seçilen tecrübeyi silmek istediğinize emin misiniz?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#5CBA6C',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Evet',
+            cancelButtonText: 'Hayır'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: "POST",
+                    url: "/Experience/DeleteExperience/" + id,
+                    success: function (s) {
+                        if (s) {
+                            Swal.fire(
+                                'Başarılı!',
+                                'Seçilen Blog Silindi .',
+                                'success'
+                            )
+                            btn.parent().parent().remove();
+                        }
+                    }
+                });
+            }
+            else if (result.dismiss === Swal.DismissReason.cancel) {
+                Swal.fire({
+                    icon: 'info',
+                    text: 'Silme işlemi yapılmadı'
+                });
+            }
+        });
+    });
+</script>

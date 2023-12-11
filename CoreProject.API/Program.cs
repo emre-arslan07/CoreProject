@@ -199,7 +199,7 @@ app.UseRouting();
 app.UseCors("CoreProjectApiCors");
 app.UseHttpsRedirection();
 
-//app.UseAuthentication();
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseEndpoints(endpoints =>

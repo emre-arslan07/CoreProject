@@ -43,8 +43,7 @@ namespace CoreProject.UI.Controllers
             var httpClient = new HttpClient();
             var responseMessage = await httpClient.DeleteAsync($"https://localhost:7111/api/Experience/{id}");
             if (responseMessage.IsSuccessStatusCode)
-            {
-                Thread.Sleep(1000);
+            {               
                 return RedirectToAction("Index");
 
             }

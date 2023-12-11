@@ -15,11 +15,14 @@ namespace CoreProject.UI.Areas.Writer.Controllers
 
     public class LoginController : Controller
     {
-        private SignInManager<AppUser> _signInManager;
+        private readonly SignInManager<AppUser> _signInManager;
+        private readonly UserManager<AppUser> _userManager;
+       
 
-        public LoginController(SignInManager<AppUser> signInManager)
+        public LoginController(SignInManager<AppUser> signInManager, UserManager<AppUser> userManager) 
         {
             _signInManager = signInManager;
+            _userManager = userManager;
         }
 
         [HttpGet]
@@ -33,8 +36,15 @@ namespace CoreProject.UI.Areas.Writer.Controllers
             if (ModelState.IsValid)
             {
                 var result = await _signInManager.PasswordSignInAsync(userLoginVM.Username,userLoginVM.Password, true, true);
+                
                 if (result.Succeeded)
                 {
+                    var user=await _userManager.FindByNameAsync(userLoginVM.Username);
+                    var result2 = await _userManager.GetRolesAsync(user);
+                    if (result2.Contains("Admin"))
+                    {
+                        return RedirectToAction("Index", "Dashboard");
+                    }
                     return RedirectToAction("Index", "Default",new {area="Writer"});
                 }
                 else
