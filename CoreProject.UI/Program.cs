@@ -1,9 +1,16 @@
+using AspNetCoreHero.ToastNotification;
+using AspNetCoreHero.ToastNotification.Extensions;
 using CoreProject.DAL.Concrete;
 using CoreProject.Entity.Concrete;
 using CoreProject.UI.Models;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using System.Reflection;
+using Microsoft.Extensions.Configuration;
+using System.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +34,16 @@ builder.Services.AddHttpClient();
 //    config.Filters.Add(new AuthorizeFilter(policy));
 
 //});
+//builder.Services.AddValidatorsFromAssemblyContaining<ExperienceVM>();
+
+builder.Services.AddControllers()
+                .AddFluentValidation(x =>
+                {
+                    x.ImplicitlyValidateChildProperties = true;
+                    x.ImplicitlyValidateRootCollectionElements = true;
+                    x.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+                    x.DisableDataAnnotationsValidation=true;
+                });
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddMvc(config =>
@@ -39,13 +56,7 @@ builder.Services.AddMvc(config =>
 
 builder.Services.AddMvc();
 
-//builder.Services.ConfigureApplicationCookie(options =>
-//{
-//    options.Cookie.HttpOnly = true;
-//    options.ExpireTimeSpan = TimeSpan.FromMinutes(1);
-//    options.AccessDeniedPath = "/ErrorPage/Index/";
-//    options.LoginPath = "/Writer/Login/Index/";
-//});
+builder.Services.AddNotyf(config => { config.DurationInSeconds = 10; config.IsDismissable = true; config.Position = NotyfPosition.TopRight; });
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath = new PathString("/Writer/Login/Index/");
@@ -92,3 +103,4 @@ app.MapControllerRoute(
 
 
 app.Run();
+app.UseNotyf();

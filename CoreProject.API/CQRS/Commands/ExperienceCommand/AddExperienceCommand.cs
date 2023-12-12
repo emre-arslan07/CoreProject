@@ -2,7 +2,7 @@
 
 namespace CoreProject.API.CQRS.Commands.ExperienceCommand
 {
-    public class AddExperienceCommand:IRequest
+    public class AddExperienceCommand:IRequest<bool>
     {
         public int ExprerienceID { get; set; }
         public string Name { get; set; }

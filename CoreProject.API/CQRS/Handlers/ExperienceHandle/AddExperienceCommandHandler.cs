@@ -5,7 +5,7 @@ using MediatR;
 
 namespace CoreProject.API.CQRS.Handlers.ExperienceHandle
 {
-    public class AddExperienceCommandHandler : IRequestHandler<AddExperienceCommand>
+    public class AddExperienceCommandHandler : IRequestHandler<AddExperienceCommand,bool>
     {
         private readonly IExperienceService _experienceService;
 
@@ -14,9 +14,9 @@ namespace CoreProject.API.CQRS.Handlers.ExperienceHandle
             _experienceService = experienceService;
         }
 
-        public async Task<Unit> Handle(AddExperienceCommand request, CancellationToken cancellationToken)
+        public async Task<bool> Handle(AddExperienceCommand request, CancellationToken cancellationToken)
         {
-            await _experienceService.AddAsync(new Experience
+          return await _experienceService.AddAsync(new Experience
             {
                 Name = request.Name,
                 Date = request.Date,
@@ -24,7 +24,7 @@ namespace CoreProject.API.CQRS.Handlers.ExperienceHandle
                 ImageUrl = request.ImageUrl
             });
 
-            return Unit.Value;
+            
         }
     }
 }

@@ -17,6 +17,10 @@
     {
       "library": "bootstrap@5.3.2",
       "destination": "wwwroot/bootstrap/"
+    },
+    {
+      "library": "jquery@3.7.1",
+      "destination": "wwwroot/lib/jquery/"
     }
   ]
 }

@@ -4,7 +4,6 @@
     Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
     int i = 0;
 }
-
 <div class="card-header border-0">
     <h3 class="mb-0">
         Deneyim Listesi    <a href="/Experience/AddExperience/" class="btn btn-outline-primary">Ekle</a>
@@ -73,7 +72,7 @@
                         if (s) {
                             Swal.fire(
                                 'Başarılı!',
-                                'Seçilen Blog Silindi .',
+                                'Seçilen Deneyim Silindi .',
                                 'success'
                             )
                             btn.parent().parent().remove();

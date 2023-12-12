@@ -21,7 +21,7 @@
     <link rel="stylesheet" href="~/corona-free-dark-bootstrap-admin-template-1.0.0/template/assets/vendors/flag-icon-css/css/flag-icon.min.css">
     <link rel="stylesheet" href="~/corona-free-dark-bootstrap-admin-template-1.0.0/template/assets/vendors/owl-carousel-2/owl.carousel.min.css">
     <link rel="stylesheet" href="~/corona-free-dark-bootstrap-admin-template-1.0.0/template/assets/vendors/owl-carousel-2/owl.theme.default.min.css">
-
+   
 </head>
 <body>
     <div class="container-scroller">
@@ -89,8 +89,8 @@
                        
                    
                 </div>
-                @await RenderSectionAsync("scripts",required:false)
-                <!-- content-wrapper ends -->
+@*                 @await RenderSectionAsync("scripts",required:false)
+ *@                <!-- content-wrapper ends -->
                 <!-- partial:~/corona-free-dark-bootstrap-admin-template-1.0.0/template/partials/_footer.html -->
                 <footer class="footer">
                     <div class="d-sm-flex justify-content-center justify-content-sm-between">
@@ -147,5 +147,9 @@
     <script src="~/corona-free-dark-bootstrap-admin-template-1.0.0/template/assets/js/settings.js"></script>
     <script src="~/corona-free-dark-bootstrap-admin-template-1.0.0/template/assets/js/todolist.js"></script>
     <script src="~/corona-free-dark-bootstrap-admin-template-1.0.0/template/assets/js/dashboard.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/lib/jquery/jquery.min.js"></script>
+    @await Component.InvokeAsync("Notyf")
+    @RenderSection("Scripts", required: false)
 </body>
 </html>

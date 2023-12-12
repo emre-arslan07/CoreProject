@@ -42,7 +42,14 @@ namespace CoreProject.API.Controllers
         public async Task<IActionResult> AddExperience(AddExperienceCommand addExperienceCommand)
         {
             var values = await _mediator.Send(addExperienceCommand);
-            return Ok(values);
+            if (values == false)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return Ok(values);
+            }
         }
 
         [HttpDelete("{id}")]

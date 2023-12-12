@@ -7,6 +7,7 @@
 <div class="card-header border-0">
     <h3>Yetenek Ekleme Sayfası</h3>
 </div>
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
 @using (Html.BeginForm("AddExperience", "Experience", FormMethod.Post))
 {
     <div class="col-12 grid-margin stretch-card">
@@ -15,21 +16,27 @@
     <br />
     @Html.Label("Deneyim Başlığı")
     @Html.TextBoxFor(x=>x.Name,new{@class="form-control"})
+                <span asp-validation-for="Name" class="text-danger"></span>
     <br />
     @Html.Label("Tarih Bilgisi")
     @Html.TextBoxFor(x=>x.Date,new{@class="form-control"})
+                <span asp-validation-for="Date" class="text-danger"></span>
     <br />
     @Html.Label("Resim Yolu ")
     @Html.TextBoxFor(x=>x.ImageUrl,new{@class="form-control"})
+                <span asp-validation-for="ImageUrl" class="text-danger"></span>
     <br />
     @Html.Label("Açıklama ")
     @Html.TextAreaFor(x=>x.Description,10,3,new{@class="form-control"})
+                <span asp-validation-for="Description" class="text-danger"></span>
+
     <br />
-    <button class="btn btn-outline-success">Ekle</button>
+    <button class="btn btn-outline-success Add">Ekle</button>
             </div>
         </div>
     </div>
 }
+
 
 
 
