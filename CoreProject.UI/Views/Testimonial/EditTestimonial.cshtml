@@ -7,6 +7,7 @@
 <div class="card-header border-0">
     <h3 class="mb-0">Referans Detay Sayfası</h3>
 </div>
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
 @using (Html.BeginForm("EditTestimonial", "Testimonial", FormMethod.Post))
 {
     <div class="col-12 grid-margin stretch-card">
@@ -19,22 +20,29 @@
                     <div class="form-group">
                         <label>Ad Soyad</label>
                         @Html.TextBoxFor(x => x.ClientName, new { @class = "form-control" })
+                        <span asp-validation-for="ClientName" class="text-danger"></span>
+
                     </div>
                     <div class="form-group">
                         <label>Şirket</label>
                         @Html.TextBoxFor(x => x.Company, new { @class = "form-control" })
+                        <span asp-validation-for="Company" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label>Başlık</label>
                         @Html.TextBoxFor(x => x.Title, new { @class = "form-control" })
+                        <span asp-validation-for="Title" class="text-danger"></span>
+
                     </div>
                     <div class="form-group">
                         <label>Resim Yolu</label>
                         @Html.TextBoxFor(x => x.ImageUrl, new { @class = "form-control" })
+                        <span asp-validation-for="ImageUrl" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label>Yorum</label>
                         @Html.TextAreaFor(x => x.Comment, 8, 3, new { @class = "form-control" })
+                        <span asp-validation-for="Comment" class="text-danger"></span>
                     </div>
                     <button type="submit" class="btn btn-primary mr-2">Kaydet</button>
                     <button class="btn btn-dark">İptal</button>

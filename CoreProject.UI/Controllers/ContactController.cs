@@ -1,4 +1,6 @@
-﻿using CoreProject.UI.Models;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using CoreProject.UI.Models;
+using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -8,6 +10,7 @@ namespace CoreProject.UI.Controllers
     [Authorize(Roles = "Admin")]
     public class ContactController : Controller
     {
+
         public async Task<IActionResult> Index()
         {
             var httpClient = new HttpClient();

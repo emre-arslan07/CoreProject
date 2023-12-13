@@ -1,5 +1,8 @@
-﻿using CoreProject.UI.Models;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using CoreProject.Entity.Concrete;
+using CoreProject.UI.Models;
 using CoreProject.UI.ValidationRules;
+using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +14,15 @@ namespace CoreProject.UI.Controllers
     [Authorize(Roles = "Admin")]
     public class PortfolioController : Controller
     {
+        private readonly INotyfService _notyfService;
+        private readonly IValidator<PortfolioVM> _validator;
+
+        public PortfolioController(INotyfService notyfService, IValidator<PortfolioVM> validator)
+        {
+            _notyfService = notyfService;
+            _validator = validator;
+        }
+
         [HttpGet]
         public async Task<IActionResult> Index()
         {
@@ -29,7 +41,7 @@ namespace CoreProject.UI.Controllers
 
         [HttpPost]
         public async Task<IActionResult> AddPortfolio(PortfolioVM portfolioVM)
-        { 
+        {
             portfolioVM.Status = true;
             portfolioVM.Image1 = "asd";
             portfolioVM.Image2 = "sdasd";
@@ -37,28 +49,35 @@ namespace CoreProject.UI.Controllers
             portfolioVM.Image4 = "sdasd";
             portfolioVM.Platform = "asdasd";
 
-            PortfolioValidator validations = new PortfolioValidator();
-            ValidationResult result=validations.Validate(portfolioVM);
-
-            if (result.IsValid)
+            ValidationResult result = await _validator.ValidateAsync(portfolioVM);
+            if (!result.IsValid)
+            {
+                foreach (var item in result.Errors)
+                {
+                    ModelState.AddModelError(item.PropertyName, item.ErrorMessage);
+                }
+                return View("AddPortfolio", portfolioVM);
+            }
+            else
             {
                 var httpClient = new HttpClient();
                 var jsonBlog = JsonConvert.SerializeObject(portfolioVM);
                 StringContent content = new StringContent(jsonBlog, Encoding.UTF8, "application/json");
                 var responseMessage = await httpClient.PostAsync("https://localhost:7111/api/Portfolio/AddPortfolio",
                  content);
-                return RedirectToAction("Index");
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    _notyfService.Success("Ekleme işlemi başarılı", 3);
+                    return RedirectToAction("AddPortfolio", "Portfolio");
+                }
+                else
+                {
+                    _notyfService.Error("Ekleme işlemi başarısız", 3);
+                    return RedirectToAction("AddPortfolio", "Portfolio");
+                }
 
             }
-            else 
-            {
-                foreach (var item in result.Errors)
-                {
-                    ModelState.AddModelError(item.PropertyName, item.ErrorMessage);
-                }
-            }
-            return View();
-            
+
         }
 
         public async Task<IActionResult> DeletePortfolio(int id)
@@ -101,10 +120,16 @@ namespace CoreProject.UI.Controllers
             portfolioVM.Image4 = "sdasd";
             portfolioVM.Platform = "asdasd";
 
-            PortfolioValidator validations = new PortfolioValidator();
-            ValidationResult result = validations.Validate(portfolioVM);
-
-            if (result.IsValid)
+            ValidationResult result = await _validator.ValidateAsync(portfolioVM);
+            if (!result.IsValid)
+            {
+                foreach (var item in result.Errors)
+                {
+                    ModelState.AddModelError(item.PropertyName, item.ErrorMessage);
+                }
+                return View("EditPortfolio", portfolioVM);
+            }
+            else
             {
                 var httpClient = new HttpClient();
                 var jsonBlog = JsonConvert.SerializeObject(portfolioVM);
@@ -113,22 +138,16 @@ namespace CoreProject.UI.Controllers
                  content);
                 if (responseMessage.IsSuccessStatusCode)
                 {
-                    var jsonString = await responseMessage.Content.ReadAsStringAsync();
-                    return RedirectToAction("Index");
+                    _notyfService.Success("Düzenleme işlemi başarılı", 3);
+                    return RedirectToAction("EditPortfolio", "Portfolio");
                 }
-            }
-            else
-            {
-                foreach (var item in result.Errors)
+                else
                 {
-                    ModelState.AddModelError(item.PropertyName, item.ErrorMessage);
+                    _notyfService.Error("Düzenleme işlemi başarısız", 3);
+                    return RedirectToAction("EditPortfolio", "Portfolio");
                 }
+
             }
-
-            return View();
-
-
-
         }
     }
 }

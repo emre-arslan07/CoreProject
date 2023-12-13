@@ -1,4 +1,8 @@
-﻿using CoreProject.UI.Models;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using CoreProject.Entity.Concrete;
+using CoreProject.UI.Models;
+using FluentValidation;
+using FluentValidation.Results;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -9,6 +13,15 @@ namespace CoreProject.UI.Controllers
     [Authorize(Roles = "Admin")]
     public class ServiceController : Controller
     {
+        private readonly INotyfService _notyfService;
+        private readonly IValidator<ServiceVM> _validator;
+
+        public ServiceController(INotyfService notyfService, IValidator<ServiceVM> validator)
+        {
+            _notyfService = notyfService;
+            _validator = validator;
+        }
+
         public async Task<IActionResult> Index()
         {
             var httpClient = new HttpClient();
@@ -25,17 +38,36 @@ namespace CoreProject.UI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddService(ServiceVM serviceVM )
+        public async Task<IActionResult> AddService(ServiceVM serviceVM)
         {
-
-            var httpClient = new HttpClient();
-            var jsonBlog = JsonConvert.SerializeObject(serviceVM);
-            StringContent content = new StringContent(jsonBlog, Encoding.UTF8, "application/json");
-            var responseMessage = await httpClient.PostAsync("https://localhost:7111/api/Service/AddService",
-             content);
-            return RedirectToAction("Index");
+            ValidationResult result = await _validator.ValidateAsync(serviceVM);
+            if (!result.IsValid)
+            {
+                foreach (var item in result.Errors)
+                {
+                    ModelState.AddModelError(item.PropertyName, item.ErrorMessage);
+                }
+                return View("AddService", serviceVM);
+            }
+            else
+            {
+                var httpClient = new HttpClient();
+                var jsonBlog = JsonConvert.SerializeObject(serviceVM);
+                StringContent content = new StringContent(jsonBlog, Encoding.UTF8, "application/json");
+                var responseMessage = await httpClient.PostAsync("https://localhost:7111/api/Service/AddService",
+                 content);
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    _notyfService.Success("Ekleme işlemi başarılı", 3);
+                    return RedirectToAction("AddService", "Service");
+                }
+                else
+                {
+                    _notyfService.Error("Ekleme işlemi başarısız", 3);
+                    return RedirectToAction("AddService", "Service");
+                }
+            }
         }
-
         public async Task<IActionResult> DeleteService(int id)
         {
 
@@ -68,21 +100,39 @@ namespace CoreProject.UI.Controllers
         [HttpPost]
         public async Task<IActionResult> EditService(ServiceVM serviceVM )
         {
-
-            var httpClient = new HttpClient();
-            var jsonBlog = JsonConvert.SerializeObject(serviceVM);
-            StringContent content = new StringContent(jsonBlog, Encoding.UTF8, "application/json");
-            var responseMessage = await httpClient.PutAsync("https://localhost:7111/api/Service",
-             content);
-            if (responseMessage.IsSuccessStatusCode)
+            ValidationResult result = await _validator.ValidateAsync(serviceVM);
+            if (!result.IsValid)
             {
-                var jsonString = await responseMessage.Content.ReadAsStringAsync();
-                return RedirectToAction("Index");
+                foreach (var item in result.Errors)
+                {
+                    ModelState.AddModelError(item.PropertyName, item.ErrorMessage);
+                }
+                return View("EditService", serviceVM);
             }
-            return View();
+            else
+            {
+
+                var httpClient = new HttpClient();
+                var jsonBlog = JsonConvert.SerializeObject(serviceVM);
+                StringContent content = new StringContent(jsonBlog, Encoding.UTF8, "application/json");
+                var responseMessage = await httpClient.PutAsync("https://localhost:7111/api/Service",
+                 content);
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    var jsonString = await responseMessage.Content.ReadAsStringAsync();
+                    _notyfService.Success("Düzenleme işlemi başarılı", 3);
+                    return RedirectToAction("EditService", "Service");
+                }
+                else
+                {
+                    var jsonString = await responseMessage.Content.ReadAsStringAsync();
+                    _notyfService.Error("Düzenleme işlemi başarısız", 3);
+                    return RedirectToAction("EditService", "Service");
+
+                }
 
 
-
-        }
+            }
+            }
     }
 }

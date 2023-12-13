@@ -101,27 +101,36 @@ namespace CoreProject.UI.Controllers
         [HttpPost]
         public async Task<IActionResult> EditExperience(ExperienceVM experienceVM)
         {
-           
-
-            var httpClient = new HttpClient();
-            var jsonBlog = JsonConvert.SerializeObject(experienceVM);
-            StringContent content = new StringContent(jsonBlog, Encoding.UTF8, "application/json");
-            var responseMessage = await httpClient.PutAsync("https://localhost:7111/api/Experience",
-             content);
-            if (responseMessage.IsSuccessStatusCode)
+            ValidationResult result = await _validator.ValidateAsync(experienceVM);
+            if (!result.IsValid)
             {
-                _notyfService.Success("Ekleme işlemi başarılı", 3);
-                return RedirectToAction("AddExperience", "Experience");
+                foreach (var item in result.Errors)
+                {
+                    ModelState.AddModelError(item.PropertyName, item.ErrorMessage);
+                }
+                return View("EditExperience", experienceVM);
             }
             else
             {
-                _notyfService.Error("Ekleme işlemi başarısız", 3);
-                return RedirectToAction("AddExperience", "Experience");
+                var httpClient = new HttpClient();
+                var jsonBlog = JsonConvert.SerializeObject(experienceVM);
+                StringContent content = new StringContent(jsonBlog, Encoding.UTF8, "application/json");
+                var responseMessage = await httpClient.PutAsync("https://localhost:7111/api/Experience",
+                 content);
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    _notyfService.Success("Düzenleme işlemi başarılı", 3);
+                    return RedirectToAction("EditExperience", "Experience");
+                }
+                else
+                {
+                    _notyfService.Error("Düzenleme işlemi başarısız", 3);
+                    return RedirectToAction("EditExperience", "Experience");
+
+                }
+
 
             }
-
-
-
         }
     }
 }

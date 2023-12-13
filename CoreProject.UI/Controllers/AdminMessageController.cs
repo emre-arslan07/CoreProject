@@ -1,4 +1,5 @@
-﻿using CoreProject.Entity.Concrete;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using CoreProject.Entity.Concrete;
 using CoreProject.UI.Areas.Writer.Models;
 using CoreProject.UI.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -13,10 +14,13 @@ namespace CoreProject.UI.Controllers
     public class AdminMessageController : Controller
     {
         private readonly UserManager<AppUser> _userManager;
+        private readonly INotyfService _notyfService;
 
-        public AdminMessageController(UserManager<AppUser> userManager)
+
+        public AdminMessageController(UserManager<AppUser> userManager, INotyfService notyfService)
         {
             _userManager = userManager;
+            _notyfService = notyfService;
         }
         [HttpGet]       
         public async Task<IActionResult> Inbox()
@@ -99,6 +103,14 @@ namespace CoreProject.UI.Controllers
             var responseMessage = await httpClient.PostAsync("https://localhost:7111/api/AdminMessage/SendAdminMessage", content);
             if (responseMessage.IsSuccessStatusCode)
             {
+                _notyfService.Success("Mesajınız başarıyla gönderildi");
+                var jsonString = await responseMessage.Content.ReadAsStringAsync();
+                //var values = JsonConvert.DeserializeObject<SkillVM>(jsonString);
+                return RedirectToAction("Sendbox", "AdminMessage");
+            }
+            else
+            {
+                _notyfService.Error("Mesajınız gönderilemedi");
                 var jsonString = await responseMessage.Content.ReadAsStringAsync();
                 //var values = JsonConvert.DeserializeObject<SkillVM>(jsonString);
                 return RedirectToAction("Sendbox", "AdminMessage");

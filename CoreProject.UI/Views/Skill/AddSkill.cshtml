@@ -8,6 +8,7 @@
         Yetenek Ekle
     </h3>
 </div>
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
 <div class="col-12 grid-margin stretch-card">
     <div class="card">
         <div class="card-body">
@@ -15,9 +16,11 @@
                 <br />
                 @Html.Label("Yetenek Başlığı")
                 @Html.TextBoxFor(x => x.Title, new { @class = "form-control" })
+                <span asp-validation-for="Title" class="text-danger"></span>
                 <br />
                 @Html.Label("Değer")
                 @Html.TextBoxFor(x => x.Value, new { @class = "form-control" })
+                <span asp-validation-for="Value" class="text-danger"></span>
                 <br />
                 <button type="submit" class="btn btn-outline-success">Kaydet</button>
             </form>

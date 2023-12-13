@@ -3,8 +3,8 @@
     ViewData["Title"] = "AddTestimonial";
     Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
 }
-
-<form asp-action="AddTestimonial">
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<form asp-action="AddTestimonial" asp-controller="Testimonial">
     <div class="col-12 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
@@ -12,22 +12,27 @@
                 <div class="form-group">
                     <label>Ad Soyad</label>
                     <input type="text" class="form-control" asp-for="@Model.ClientName">
+                    <span asp-validation-for="ClientName" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label>Şirket</label>
                     <input type="text" class="form-control" asp-for="@Model.Company">
+                    <span asp-validation-for="Company" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label>Görsel URL</label>
                     <input type="text" class="form-control" asp-for="@Model.ImageUrl">
+                    <span asp-validation-for="ImageUrl" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label>Title</label>
                     <input type="text" class="form-control" asp-for="@Model.Title">
+                    <span asp-validation-for="Title" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label>Yorum</label>
                     <textarea class="form-control" asp-for="@Model.Comment" rows="6"></textarea>
+                    <span asp-validation-for="Comment" class="text-danger"></span>
                 </div>
                 <button type="submit" class="btn btn-primary mr-2">Kaydet</button>
                 <button class="btn btn-dark">İptal</button>

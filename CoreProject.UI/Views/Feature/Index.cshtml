@@ -7,6 +7,7 @@
 <div class="card-header border-0">
     <h3>Öne Çıkan Post Düzenleme Sayfası</h3>
 </div>
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
 @using (Html.BeginForm("Index","Feature", FormMethod.Post))
 {
     <div class="col-12 grid-margin stretch-card">
@@ -15,13 +16,16 @@
                 @Html.HiddenFor(x => x.FeatureID)
                 <br />
                 @Html.Label("Başlık")
-                @Html.TextBoxFor(x => x.Header, new { @class = "form-control" })
+                @Html.TextBoxFor(x => x.Header, new { @class = "form-control" })   
+                <span asp-validation-for="Header" class="text-danger"></span>
                 <br />
                 @Html.Label("Ad Soyad")
                 @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
+                <span asp-validation-for="Name" class="text-danger"></span>
                 <br />
                 @Html.Label("Unvan")
                 @Html.TextBoxFor(x => x.Title, new { @class = "form-control" })
+                <span asp-validation-for="Title" class="text-danger"></span>
                 <br />
                 <button class="btn btn-outline-success">Güncelle</button>
                 <br />

@@ -8,7 +8,7 @@
     <h3>Hizmet Ekleme Sayfası</h3>
 </div>
 
-
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
 <div class="col-12 grid-margin stretch-card">
     <div class="card">
         <div class="card-body">
@@ -17,9 +17,12 @@
                 <br />
                 @Html.Label("Hizmet Başlığı")
                 @Html.TextBoxFor(x => x.Title, new { @class = "form-control" })
+                <span asp-validation-for="Title" class="text-danger"></span>
+
                 <br />
                 @Html.Label("Resim Yolu ")
                 @Html.TextBoxFor(x => x.ImageUrl, new { @class = "form-control" })
+                <span asp-validation-for="ImageUrl" class="text-danger"></span>
                 <br />
                 <button class="btn btn-outline-success">Ekle</button>
             }
