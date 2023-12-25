@@ -1,4 +1,5 @@
-﻿using CoreProject.UI.Models;
+﻿using CoreProject.UI.ApiProvider;
+using CoreProject.UI.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -31,12 +32,8 @@ namespace CoreProject.UI.Controllers
 
         [HttpPost]
         public async Task<PartialViewResult> SendMessage(MessageVM messageVM)
-        {
-            var httpClient = new HttpClient();
-            var responseMessage = await httpClient.GetAsync("https://localhost:7111/api/Default/SendMessage");
-            var jsonString = await responseMessage.Content.ReadAsStringAsync();
-            var values = JsonConvert.DeserializeObject<List<MessageVM>>(jsonString);
-            return PartialView(values);
+        {            
+            return PartialView(await GenericApiProvider<MessageVM>.GetListAsync("Default","SendMethod"));
         }
 
 

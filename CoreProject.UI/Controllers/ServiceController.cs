@@ -1,5 +1,6 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using CoreProject.Entity.Concrete;
+using CoreProject.UI.ApiProvider;
 using CoreProject.UI.Models;
 using FluentValidation;
 using FluentValidation.Results;
@@ -23,12 +24,8 @@ namespace CoreProject.UI.Controllers
         }
 
         public async Task<IActionResult> Index()
-        {
-            var httpClient = new HttpClient();
-            var responseMessage = await httpClient.GetAsync("https://localhost:7111/api/Service/GetService");
-            var jsonString = await responseMessage.Content.ReadAsStringAsync();
-            var values = JsonConvert.DeserializeObject<List<ServiceVM>>(jsonString);
-            return View(values);
+        {           
+            return View(await GenericApiProvider<ServiceVM>.GetListAsync("Service","GetService"));
         }
 
         [HttpGet]
@@ -50,13 +47,8 @@ namespace CoreProject.UI.Controllers
                 return View("AddService", serviceVM);
             }
             else
-            {
-                var httpClient = new HttpClient();
-                var jsonBlog = JsonConvert.SerializeObject(serviceVM);
-                StringContent content = new StringContent(jsonBlog, Encoding.UTF8, "application/json");
-                var responseMessage = await httpClient.PostAsync("https://localhost:7111/api/Service/AddService",
-                 content);
-                if (responseMessage.IsSuccessStatusCode)
+            {              
+                if (await GenericApiProvider<ServiceVM>.AddTentityAsync("Service","AddService",serviceVM)==true)
                 {
                     _notyfService.Success("Ekleme işlemi başarılı", 3);
                     return RedirectToAction("AddService", "Service");
@@ -70,10 +62,7 @@ namespace CoreProject.UI.Controllers
         }
         public async Task<IActionResult> DeleteService(int id)
         {
-
-            var httpClient = new HttpClient();
-            var responseMessage = await httpClient.DeleteAsync($"https://localhost:7111/api/Service/{id}");
-            if (responseMessage.IsSuccessStatusCode)
+            if (await GenericApiProvider<bool>.DeleteTentityAsync("Service",id)==true)
             {
                 Thread.Sleep(1000);
                 return RedirectToAction("Index");
@@ -84,17 +73,8 @@ namespace CoreProject.UI.Controllers
 
         [HttpGet]
         public async Task<IActionResult> EditService(int id)
-        {
-
-            var httpClient = new HttpClient();
-            var responseMessage = await httpClient.GetAsync($"https://localhost:7111/api/Service/{id}");
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                var jsonString = await responseMessage.Content.ReadAsStringAsync();
-                var values = JsonConvert.DeserializeObject<ServiceVM>(jsonString);
-                return View(values);
-            }
-            return View();
+        {         
+            return View(await GenericApiProvider<ExperienceVM>.GetByIdTentityAsync("Service",null,id));
         }
 
         [HttpPost]
@@ -111,24 +91,15 @@ namespace CoreProject.UI.Controllers
             }
             else
             {
-
-                var httpClient = new HttpClient();
-                var jsonBlog = JsonConvert.SerializeObject(serviceVM);
-                StringContent content = new StringContent(jsonBlog, Encoding.UTF8, "application/json");
-                var responseMessage = await httpClient.PutAsync("https://localhost:7111/api/Service",
-                 content);
-                if (responseMessage.IsSuccessStatusCode)
+                if (await GenericApiProvider<ServiceVM>.EditTentityAsync("Service",serviceVM)==true)
                 {
-                    var jsonString = await responseMessage.Content.ReadAsStringAsync();
                     _notyfService.Success("Düzenleme işlemi başarılı", 3);
                     return RedirectToAction("EditService", "Service");
                 }
                 else
                 {
-                    var jsonString = await responseMessage.Content.ReadAsStringAsync();
                     _notyfService.Error("Düzenleme işlemi başarısız", 3);
                     return RedirectToAction("EditService", "Service");
-
                 }
 
 

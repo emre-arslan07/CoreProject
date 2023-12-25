@@ -1,5 +1,6 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using CoreProject.Entity.Concrete;
+using CoreProject.UI.ApiProvider;
 using CoreProject.UI.Models;
 using FluentValidation;
 using FluentValidation.Results;
@@ -24,12 +25,8 @@ namespace CoreProject.UI.Controllers
 
         [HttpGet]
         public async Task<IActionResult> Index()
-        {
-            var httpClient = new HttpClient();
-            var responseMessage = await httpClient.GetAsync("https://localhost:7111/api/SocialMedia/GetAllSocialMedia");
-            var jsonString = await responseMessage.Content.ReadAsStringAsync();
-            var values = JsonConvert.DeserializeObject<List<SocialMediaVM>>(jsonString);
-            return View(values);
+        {           
+            return View(await GenericApiProvider<SocialMediaVM>.GetListAsync("SocialMedia", "GetAllSocialMedia"));
         }
 
         [HttpGet]
@@ -51,13 +48,8 @@ namespace CoreProject.UI.Controllers
                 return View("AddSocialMedia", socialMediaVM);
             }
             else
-            {
-                var httpClient = new HttpClient();
-                var jsonBlog = JsonConvert.SerializeObject(socialMediaVM);
-                StringContent content = new StringContent(jsonBlog, Encoding.UTF8, "application/json");
-                var responseMessage = await httpClient.PostAsync("https://localhost:7111/api/SocialMedia/AddSocialMedia",
-                 content);
-                if (responseMessage.IsSuccessStatusCode)
+            {             
+                if (await GenericApiProvider<SocialMediaVM>.AddTentityAsync("SocialMedia", "AddSocialMedia",socialMediaVM)==true)
                 {
                     _notyfService.Success("Ekleme işlemi başarılı", 3);
                     return RedirectToAction("AddSocialMedia", "SocialMedia");
@@ -72,10 +64,7 @@ namespace CoreProject.UI.Controllers
 
         public async Task<IActionResult> DeleteSocialMedia(int id)
         {
-
-            var httpClient = new HttpClient();
-            var responseMessage = await httpClient.DeleteAsync($"https://localhost:7111/api/SocialMedia/{id}");
-            if (responseMessage.IsSuccessStatusCode)
+            if (await GenericApiProvider<bool>.DeleteTentityAsync("SocialMedia",id)==true)
             {
                 Thread.Sleep(1000);
                 return RedirectToAction("Index");
@@ -87,16 +76,7 @@ namespace CoreProject.UI.Controllers
         [HttpGet]
         public async Task<IActionResult> EditSocialMedia(int id)
         {
-
-            var httpClient = new HttpClient();
-            var responseMessage = await httpClient.GetAsync($"https://localhost:7111/api/SocialMedia/{id}");
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                var jsonString = await responseMessage.Content.ReadAsStringAsync();
-                var values = JsonConvert.DeserializeObject<SocialMediaVM>(jsonString);
-                return View(values);
-            }
-            return View();
+            return View(await GenericApiProvider<SocialMediaVM>.GetByIdTentityAsync("SocialMedia",null,id));
         }
 
         [HttpPost]
@@ -112,13 +92,8 @@ namespace CoreProject.UI.Controllers
                 return View("EditSocialMedia", socialMediaVM);
             }
             else
-            {
-                var httpClient = new HttpClient();
-                var jsonBlog = JsonConvert.SerializeObject(socialMediaVM);
-                StringContent content = new StringContent(jsonBlog, Encoding.UTF8, "application/json");
-                var responseMessage = await httpClient.PutAsync("https://localhost:7111/api/SocialMedia",
-                 content);
-                if (responseMessage.IsSuccessStatusCode)
+            {               
+                if (await GenericApiProvider<SocialMediaVM>.EditTentityAsync("SocialMedia",socialMediaVM)==true)
                 {
                     _notyfService.Success("Güncelleme işlemi başarılı", 3);
                     return RedirectToAction("EditSocialMedia", "SocialMedia");
@@ -128,9 +103,7 @@ namespace CoreProject.UI.Controllers
                     _notyfService.Error("Güncelleme işlemi başarısız", 3);
                     return RedirectToAction("EditSocialMedia", "SocialMedia");
                 }
-
             }
-
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using CoreProject.Entity.Concrete;
+using CoreProject.UI.ApiProvider;
 using CoreProject.UI.Models;
 using FluentValidation;
 using FluentValidation.Results;
@@ -26,12 +27,8 @@ namespace CoreProject.UI.Controllers
 
         [HttpGet]
         public async Task<IActionResult> Index()
-        {
-            var httpClient = new HttpClient();
-            var responseMessage = await httpClient.GetAsync("https://localhost:7111/api/Skill/GetSkill");
-            var jsonString = await responseMessage.Content.ReadAsStringAsync();
-            var values = JsonConvert.DeserializeObject<List<SkillVM>>(jsonString);
-            return View(values);
+        {          
+            return View(await GenericApiProvider<SkillVM>.GetListAsync("Skill","GetSkill"));
         }
 
         [HttpGet]
@@ -53,13 +50,8 @@ namespace CoreProject.UI.Controllers
                 return View("AddSkill", skillVM);
             }
             else
-            {
-                var httpClient = new HttpClient();
-                var jsonBlog = JsonConvert.SerializeObject(skillVM);
-                StringContent content = new StringContent(jsonBlog, Encoding.UTF8, "application/json");
-                var responseMessage = await httpClient.PostAsync("https://localhost:7111/api/Skill/AddSkill",
-                 content);
-                if (responseMessage.IsSuccessStatusCode)
+            {              
+                if (await GenericApiProvider<SkillVM>.AddTentityAsync("Skill","AddSkill",skillVM)==true)
                 {
                     _notyfService.Success("Ekleme işlemi başarılı", 3);
                     return RedirectToAction("AddSkill", "Skill");
@@ -73,11 +65,8 @@ namespace CoreProject.UI.Controllers
         }
      
         public async Task<IActionResult> DeleteSkill(int id)
-        {
-
-            var httpClient = new HttpClient();
-            var responseMessage = await httpClient.DeleteAsync($"https://localhost:7111/api/Skill/{id}");
-            if (responseMessage.IsSuccessStatusCode)
+        {          
+            if (await GenericApiProvider<bool>.DeleteTentityAsync("Skill",id)==true)
             {
                 Thread.Sleep(1000);
                 return RedirectToAction("Index");
@@ -88,17 +77,8 @@ namespace CoreProject.UI.Controllers
 
         [HttpGet]
         public async Task<IActionResult> EditSkill(int id)
-        {
-            
-            var httpClient = new HttpClient();
-            var responseMessage = await httpClient.GetAsync($"https://localhost:7111/api/Skill/{id}");
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                var jsonString = await responseMessage.Content.ReadAsStringAsync();
-                var values = JsonConvert.DeserializeObject<SkillVM>(jsonString);
-                return View(values);
-            }
-            return View();
+        {                    
+            return View(await GenericApiProvider<SkillVM>.GetByIdTentityAsync("Skill",null,id));
         }
 
         [HttpPost]
@@ -114,13 +94,8 @@ namespace CoreProject.UI.Controllers
                 return View("AddSkill", skillVM);
             }
             else
-            {
-                var httpClient = new HttpClient();
-                var jsonBlog = JsonConvert.SerializeObject(skillVM);
-                StringContent content = new StringContent(jsonBlog, Encoding.UTF8, "application/json");
-                var responseMessage = await httpClient.PutAsync("https://localhost:7111/api/Skill",
-                 content);
-                if (responseMessage.IsSuccessStatusCode)
+            {              
+                if (await GenericApiProvider<SkillVM>.EditTentityAsync("Skill",skillVM)==true)
                 {
                     _notyfService.Success("Düzenleme işlemi başarılı", 3);
                     return RedirectToAction("EditSkill", "Skill");

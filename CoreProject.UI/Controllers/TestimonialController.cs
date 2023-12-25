@@ -1,5 +1,6 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using CoreProject.Entity.Concrete;
+using CoreProject.UI.ApiProvider;
 using CoreProject.UI.Models;
 using FluentValidation;
 using FluentValidation.Results;
@@ -23,12 +24,8 @@ namespace CoreProject.UI.Controllers
         }
 
         public async Task<IActionResult> Index()
-        {
-            var httpClient = new HttpClient();
-            var responseMessage = await httpClient.GetAsync("https://localhost:7111/api/Testimonial/GetAllTestimonial");
-            var jsonString = await responseMessage.Content.ReadAsStringAsync();
-            var values = JsonConvert.DeserializeObject<List<TestimonialVM>>(jsonString);
-            return View(values);
+        {          
+            return View(await GenericApiProvider<TestimonialVM>.GetListAsync("Testimonial", "GetAllTestimonial"));
         }
         [HttpGet]
         public async Task<IActionResult> AddTestimonial()
@@ -49,13 +46,8 @@ namespace CoreProject.UI.Controllers
                 return View("AddTestimonial", testimonialVM);
             }
             else
-            {
-                var httpClient = new HttpClient();
-                var jsonBlog = JsonConvert.SerializeObject(testimonialVM);
-                StringContent content = new StringContent(jsonBlog, Encoding.UTF8, "application/json");
-                var responseMessage = await httpClient.PostAsync("https://localhost:7111/api/Testimonial/AddTestimonial",
-                 content);
-                if (responseMessage.IsSuccessStatusCode)
+            {           
+                if (await GenericApiProvider<TestimonialVM>.AddTentityAsync("Testimonial","AddTestimonial",testimonialVM)==true)
                 {
                     _notyfService.Success("Ekleme işlemi başarılı", 3);
                     return RedirectToAction("AddTestimonial", "Testimonial");
@@ -69,10 +61,7 @@ namespace CoreProject.UI.Controllers
         }
         public async Task<IActionResult> DeleteTestimonial(int id)
         {
-
-            var httpClient = new HttpClient();
-            var responseMessage = await httpClient.DeleteAsync($"https://localhost:7111/api/Testimonial/{id}");
-            if (responseMessage.IsSuccessStatusCode)
+            if (await GenericApiProvider<bool>.DeleteTentityAsync("Testimonial",id)==true)
             {
                 return RedirectToAction("Index");
 
@@ -82,16 +71,7 @@ namespace CoreProject.UI.Controllers
         [HttpGet]
         public async Task<IActionResult> EditTestimonial(int id)
         {
-
-            var httpClient = new HttpClient();
-            var responseMessage = await httpClient.GetAsync($"https://localhost:7111/api/Testimonial/{id}");
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                var jsonString = await responseMessage.Content.ReadAsStringAsync();
-                var values = JsonConvert.DeserializeObject<TestimonialVM>(jsonString);
-                return View(values);
-            }
-            return View();
+            return View(await GenericApiProvider<TestimonialVM>.GetByIdTentityAsync("Testimonial", null, id));
         }
         [HttpPost]
         public async Task<IActionResult> EditTestimonial(TestimonialVM testimonialVM)
@@ -106,13 +86,8 @@ namespace CoreProject.UI.Controllers
                 return View("EditTestimonial", testimonialVM);
             }
             else
-            {
-                var httpClient = new HttpClient();
-                var jsonBlog = JsonConvert.SerializeObject(testimonialVM);
-                StringContent content = new StringContent(jsonBlog, Encoding.UTF8, "application/json");
-                var responseMessage = await httpClient.PutAsync("https://localhost:7111/api/Testimonial",
-                 content);
-                if (responseMessage.IsSuccessStatusCode)
+            {               
+                if (await GenericApiProvider<TestimonialVM>.EditTentityAsync("Testimonial",testimonialVM)==true)
                 {
                     _notyfService.Success("Güncelleme işlemi başarılı", 3);
                     return RedirectToAction("EditTestimonial", "Testimonial");

@@ -1,5 +1,6 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using CoreProject.Entity.Concrete;
+using CoreProject.UI.ApiProvider;
 using CoreProject.UI.Models;
 using CoreProject.UI.ValidationRules;
 using FluentValidation;
@@ -25,12 +26,8 @@ namespace CoreProject.UI.Controllers
 
         [HttpGet]
         public async Task<IActionResult> Index()
-        {
-            var httpClient = new HttpClient();
-            var responseMessage = await httpClient.GetAsync("https://localhost:7111/api/Portfolio/GetPortfolio");
-            var jsonString = await responseMessage.Content.ReadAsStringAsync();
-            var values = JsonConvert.DeserializeObject<List<PortfolioVM>>(jsonString);
-            return View(values);
+        {          
+            return View(await GenericApiProvider<PortfolioVM>.GetListAsync("Portfolio","GetPortfolio"));
         }
 
         [HttpGet]
@@ -59,13 +56,8 @@ namespace CoreProject.UI.Controllers
                 return View("AddPortfolio", portfolioVM);
             }
             else
-            {
-                var httpClient = new HttpClient();
-                var jsonBlog = JsonConvert.SerializeObject(portfolioVM);
-                StringContent content = new StringContent(jsonBlog, Encoding.UTF8, "application/json");
-                var responseMessage = await httpClient.PostAsync("https://localhost:7111/api/Portfolio/AddPortfolio",
-                 content);
-                if (responseMessage.IsSuccessStatusCode)
+            {               
+                if (await GenericApiProvider<PortfolioVM>.AddTentityAsync("Portfolio", "AddPortfolio",portfolioVM)==true)
                 {
                     _notyfService.Success("Ekleme işlemi başarılı", 3);
                     return RedirectToAction("AddPortfolio", "Portfolio");
@@ -81,11 +73,8 @@ namespace CoreProject.UI.Controllers
         }
 
         public async Task<IActionResult> DeletePortfolio(int id)
-        {
-
-            var httpClient = new HttpClient();
-            var responseMessage = await httpClient.DeleteAsync($"https://localhost:7111/api/Portfolio/{id}");
-            if (responseMessage.IsSuccessStatusCode)
+        {           
+            if (await GenericApiProvider<bool>.DeleteTentityAsync("Portfolio",id)==true)
             {
                 Thread.Sleep(1000);
                 return RedirectToAction("Index");
@@ -97,16 +86,7 @@ namespace CoreProject.UI.Controllers
         [HttpGet]
         public async Task<IActionResult> EditPortfolio(int id)
         {
-
-            var httpClient = new HttpClient();
-            var responseMessage = await httpClient.GetAsync($"https://localhost:7111/api/Portfolio/{id}");
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                var jsonString = await responseMessage.Content.ReadAsStringAsync();
-                var values = JsonConvert.DeserializeObject<PortfolioVM>(jsonString);
-                return View(values);
-            }
-            return View();
+            return View(await GenericApiProvider<PortfolioVM>.GetByIdTentityAsync("Portfolio",null,id));
         }
 
         [HttpPost]
@@ -130,13 +110,8 @@ namespace CoreProject.UI.Controllers
                 return View("EditPortfolio", portfolioVM);
             }
             else
-            {
-                var httpClient = new HttpClient();
-                var jsonBlog = JsonConvert.SerializeObject(portfolioVM);
-                StringContent content = new StringContent(jsonBlog, Encoding.UTF8, "application/json");
-                var responseMessage = await httpClient.PutAsync("https://localhost:7111/api/Portfolio",
-                 content);
-                if (responseMessage.IsSuccessStatusCode)
+            {        
+                if (await GenericApiProvider<PortfolioVM>.EditTentityAsync("Portfolio",portfolioVM)==true)
                 {
                     _notyfService.Success("Düzenleme işlemi başarılı", 3);
                     return RedirectToAction("EditPortfolio", "Portfolio");
@@ -146,7 +121,6 @@ namespace CoreProject.UI.Controllers
                     _notyfService.Error("Düzenleme işlemi başarısız", 3);
                     return RedirectToAction("EditPortfolio", "Portfolio");
                 }
-
             }
         }
     }

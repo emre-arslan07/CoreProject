@@ -1,4 +1,5 @@
 ﻿using CoreProject.Entity.Concrete;
+using CoreProject.UI.ApiProvider;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -29,27 +30,11 @@ namespace CoreProject.UI.Areas.Writer.Controllers
             string connection = "https://api.openweathermap.org/data/2.5/weather?q=istanbul&mode=xml&lang=tr&units=metric&appid=" + apiKey;
             XDocument xDocument= XDocument.Load(connection);
             ViewBag.Tempreture = xDocument.Descendants("temperature").ElementAt(0).Attribute("value").Value.Substring(0,2);
-
-            var httpClient = new HttpClient();
-            var responseMessage1 = await httpClient.GetAsync($"https://localhost:7111/api/WriterMessage/GetWriterMessageInboxCount/{values.Email}");
-            var jsonString1 = await responseMessage1.Content.ReadAsStringAsync();
-            var values1 = JsonConvert.DeserializeObject<int>(jsonString1);
-            ViewBag.InboxCount = values1;
-
-            var responseMessage2 = await httpClient.GetAsync("https://localhost:7111/api/Announcement/GetAnnouncementCount");
-            var jsonString2 = await responseMessage2.Content.ReadAsStringAsync();
-            var values2 = JsonConvert.DeserializeObject<int>(jsonString2);
-            ViewBag.AnnouncementCount = values2;
-
-            var responseMessage3 = await httpClient.GetAsync("https://localhost:7111/api/AppUser/GetUserCount");
-            var jsonString3 = await responseMessage3.Content.ReadAsStringAsync();
-            var values3 = JsonConvert.DeserializeObject<int>(jsonString3);
-            ViewBag.UserCount = values3;
-
-            var responseMessage4 = await httpClient.GetAsync("https://localhost:7111/api/Skill/GetSkillCount");
-            var jsonString4 = await responseMessage4.Content.ReadAsStringAsync();
-            var values4 = JsonConvert.DeserializeObject<int>(jsonString4);
-            ViewBag.SkillCount = values4;
+           
+            ViewBag.InboxCount = await GenericApiProvider<int>.GetMessagesCountByEmailTentityAsync("WriterMessage", "GetWriterMessageInboxCount", values.Email);      
+            ViewBag.AnnouncementCount = await GenericApiProvider<int>.GetTentityAsync("Announcement", "GetAnnouncementCount");     
+            ViewBag.UserCount = await GenericApiProvider<int>.GetTentityAsync("AppUser", "GetUserCount");         
+            ViewBag.SkillCount = await GenericApiProvider<int>.GetTentityAsync("Skill", "GetSkillCount");
             return View();
         }
     }

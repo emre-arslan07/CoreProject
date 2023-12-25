@@ -1,4 +1,5 @@
 ﻿using CoreProject.Entity.Concrete;
+using CoreProject.UI.ApiProvider;
 using CoreProject.UI.Areas.Writer.Models;
 using CoreProject.UI.Models;
 using Microsoft.AspNetCore.Identity;
@@ -19,16 +20,8 @@ namespace CoreProject.UI.ViewComponents.Admin
         public async Task<IViewComponentResult> InvokeAsync()
         {
             var valuesUser = await _userManager.FindByNameAsync(User.Identity.Name);
-            string mail = valuesUser.Email;
-            var httpClient = new HttpClient();
-            var responseMessage = await httpClient.GetAsync($"https://localhost:7111/api/AdminMessage/GetLast3MessageInbox/{mail}");
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                var jsonString = await responseMessage.Content.ReadAsStringAsync();
-                var values = JsonConvert.DeserializeObject<List<AdminLast3MessageNavbar>>(jsonString);
-                return View(values);
-            }
-            return View();
+            string mail = valuesUser.Email;          
+            return View(await GenericApiProvider<AdminLast3MessageNavbar>.GetMessagesByEmailTentityAsync("AdminMessage", "GetLast3MessageInbox",mail));
         } 
     }
 }

@@ -1,4 +1,5 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using CoreProject.UI.ApiProvider;
 using CoreProject.UI.Models;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
@@ -12,20 +13,13 @@ namespace CoreProject.UI.Controllers
     {
 
         public async Task<IActionResult> Index()
-        {
-            var httpClient = new HttpClient();
-            var responseMessage = await httpClient.GetAsync("https://localhost:7111/api/Message/GetAllMessage");
-            var jsonString = await responseMessage.Content.ReadAsStringAsync();
-            var values = JsonConvert.DeserializeObject<List<MessageVM>>(jsonString);
-            return View(values);
+        {            
+            return View(await GenericApiProvider<MessageVM>.GetListAsync("Message", "GetAllMessage"));
         }
 
         public async Task<IActionResult> DeleteContact(int id)
-        {
-
-            var httpClient = new HttpClient();
-            var responseMessage = await httpClient.DeleteAsync($"https://localhost:7111/api/Message/{id}");
-            if (responseMessage.IsSuccessStatusCode)
+        {          
+            if (await GenericApiProvider<bool>.DeleteTentityAsync("Message",id)==true)
             {
                 return RedirectToAction("Index");
 
@@ -35,16 +29,7 @@ namespace CoreProject.UI.Controllers
 
         public async Task<IActionResult> ContactDetails(int id)
         {
-
-            var httpClient = new HttpClient();
-            var responseMessage = await httpClient.GetAsync($"https://localhost:7111/api/Message/{id}");
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                var jsonString = await responseMessage.Content.ReadAsStringAsync();
-                var values = JsonConvert.DeserializeObject<MessageVM>(jsonString);
-                return View(values);
-            }
-            return View();
+            return View(await GenericApiProvider<MessageVM>.GetByIdTentityAsync("Message", null, id));
         }
     }
 }

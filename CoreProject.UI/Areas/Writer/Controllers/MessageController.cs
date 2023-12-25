@@ -1,4 +1,5 @@
 ﻿using CoreProject.Entity.Concrete;
+using CoreProject.UI.ApiProvider;
 using CoreProject.UI.Areas.Writer.Models;
 using CoreProject.UI.Models;
 using Microsoft.AspNetCore.Identity;
@@ -24,16 +25,8 @@ namespace CoreProject.UI.Areas.Writer.Controllers
         public async Task<IActionResult> Inbox()
         {
             var valuesUser = await _userManager.FindByNameAsync(User.Identity.Name);
-            string mail = valuesUser.Email;
-            var httpClient = new HttpClient();
-            var responseMessage = await httpClient.GetAsync($"https://localhost:7111/api/WriterMessage/GetMessageInbox/{mail}");
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                var jsonString = await responseMessage.Content.ReadAsStringAsync();
-                var values = JsonConvert.DeserializeObject<List<WriterMessageVM>>(jsonString);
-                return View(values);
-            }
-            return View();
+            string mail = valuesUser.Email;          
+            return View(await GenericApiProvider<WriterMessageVM>.GetMessagesByEmailTentityAsync("WriterMessage", "GetMessageInbox", mail));
         }
         [HttpGet]
         [Route("")]
@@ -41,45 +34,21 @@ namespace CoreProject.UI.Areas.Writer.Controllers
         public async Task<IActionResult> Sendbox()
         {
             var valuesUser = await _userManager.FindByNameAsync(User.Identity.Name);
-            string mail = valuesUser.Email;
-            var httpClient = new HttpClient();
-            var responseMessage = await httpClient.GetAsync($"https://localhost:7111/api/WriterMessage/GetMessageSendbox/{mail}");
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                var jsonString = await responseMessage.Content.ReadAsStringAsync();
-                var values = JsonConvert.DeserializeObject<List<WriterMessageVM>>(jsonString);
-                return View(values);
-            }
-            return View();
+            string mail = valuesUser.Email;          
+            return View(await GenericApiProvider<WriterMessageVM>.GetMessagesByEmailTentityAsync("WriterMessage", "GetMessageSendbox", mail));
         }
       
         [HttpGet]
         [Route("InboxMessageDetails/{id}")]
         public async Task<IActionResult> InboxMessageDetails(int id)
-        {
-            var httpClient = new HttpClient();
-            var responseMessage = await httpClient.GetAsync($"https://localhost:7111/api/WriterMessage/GetWriterMessageById/{id}");
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                var jsonString = await responseMessage.Content.ReadAsStringAsync();
-                var values = JsonConvert.DeserializeObject<WriterMessageVM>(jsonString);
-                return View(values);
-            }
-            return View();
+        {          
+            return View(await GenericApiProvider<WriterMessageVM>.GetByIdTentityAsync("WriterMessage", "GetWriterMessageById",id));
         }
         [HttpGet]
         [Route("SendboxMessageDetails/{id}")]
         public async Task<IActionResult> SendboxMessageDetails(int id)
-        {
-            var httpClient = new HttpClient();
-            var responseMessage = await httpClient.GetAsync($"https://localhost:7111/api/WriterMessage/GetWriterMessageById/{id}");
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                var jsonString = await responseMessage.Content.ReadAsStringAsync();
-                var values = JsonConvert.DeserializeObject<WriterMessageVM>(jsonString);
-                return View(values);
-            }
-            return View();
+        {                       
+            return View(await GenericApiProvider<WriterMessageVM>.GetByIdTentityAsync("WriterMessage", "GetWriterMessageById", id));
         }
 
         [HttpGet]
@@ -93,7 +62,7 @@ namespace CoreProject.UI.Areas.Writer.Controllers
         [HttpPost]
         [Route("")]
         [Route("SendMessage")]
-        public async Task<IActionResult> SendMessage(WriterMessage writerMessage)
+        public async Task<IActionResult> SendMessage(WriterMessageVM writerMessage)
         {
             var valuesSender = await _userManager.FindByNameAsync(User.Identity.Name);          
             writerMessage.Sender = valuesSender.Email;
@@ -102,15 +71,9 @@ namespace CoreProject.UI.Areas.Writer.Controllers
             writerMessage.Sender=valuesSender.Email;
             writerMessage.SenderName=valuesSender.Name +" "+valuesSender.Surname;
             var receiverValue = _userManager.FindByEmailAsync(writerMessage.Receiver);
-            writerMessage.ReceiverName = receiverValue.Result.Name + " " + receiverValue.Result.Surname;
-            var httpClient = new HttpClient();
-            var jsonBlog = JsonConvert.SerializeObject(writerMessage);
-            StringContent content = new StringContent(jsonBlog, Encoding.UTF8, "application/json");
-            var responseMessage = await httpClient.PostAsync("https://localhost:7111/api/WriterMessage/SendWriterMessage", content);
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                var jsonString = await responseMessage.Content.ReadAsStringAsync();
-                //var values = JsonConvert.DeserializeObject<SkillVM>(jsonString);
+            writerMessage.ReceiverName = receiverValue.Result.Name + " " + receiverValue.Result.Surname;           
+            if (await GenericApiProvider<WriterMessageVM>.AddTentityAsync("WriterMessage", "SendWriterMessage", writerMessage) ==true)
+            {               
                 return RedirectToAction("Sendbox","Message");
             }
             return View();

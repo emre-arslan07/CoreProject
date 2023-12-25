@@ -1,5 +1,6 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using CoreProject.Entity.Concrete;
+using CoreProject.UI.ApiProvider;
 using CoreProject.UI.Models;
 using FluentValidation;
 using FluentValidation.Results;
@@ -25,16 +26,7 @@ namespace CoreProject.UI.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-
-            var httpClient = new HttpClient();
-            var responseMessage = await httpClient.GetAsync("https://localhost:7111/api/Feature/GetFeature");
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                var jsonString = await responseMessage.Content.ReadAsStringAsync();
-                var values = JsonConvert.DeserializeObject<FeatureVM>(jsonString);
-                return View(values);
-            }
-            return View();
+            return View(await GenericApiProvider<FeatureVM>.GetTentityAsync("Feature","GetFeature"));
         }
 
 
@@ -51,26 +43,19 @@ namespace CoreProject.UI.Controllers
                 return View("Index", featureVM);
             }
             else
-            {
-                var httpClient = new HttpClient();
-                var jsonBlog = JsonConvert.SerializeObject(featureVM);
-                StringContent content = new StringContent(jsonBlog, Encoding.UTF8, "application/json");
-                var responseMessage = await httpClient.PutAsync("https://localhost:7111/api/Feature",
-                 content);
-                if (responseMessage.IsSuccessStatusCode)
+            {              
+                if (await GenericApiProvider<FeatureVM>.EditTentityAsync("Feature", featureVM)==true)
                 {
                     _notyfService.Success("Düzenleme işlemi başarılı", 3);
-                    var jsonString = await responseMessage.Content.ReadAsStringAsync();
                     return RedirectToAction("Index");
                 }
                 else
                 {
                     _notyfService.Error("Düzenleme işlemi başarısız", 3);
-                    return RedirectToAction("EditExperience", "Experience");
+                    return RedirectToAction("Index");
 
                 }
             }
-
         }
     }
 }
