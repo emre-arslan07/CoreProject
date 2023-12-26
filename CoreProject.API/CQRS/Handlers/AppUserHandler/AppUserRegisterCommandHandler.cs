@@ -1,50 +1,51 @@
 ﻿using CoreProject.API.CQRS.Commands.AppUserCommand;
-using CoreProject.BLL.Abstract;
 using CoreProject.Entity.Concrete;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 
 namespace CoreProject.API.CQRS.Handlers.AppUserHandler
 {
-    public class AppUserRegisterCommandHandler : IRequestHandler<AppUserRegisterCommand>
-    {
-        //private readonly IAppUserService _appUserService;
-
-        //public AppUserRegisterCommandHandler(IAppUserService appUserService)
-        //{
-        //    _appUserService = appUserService;
-        //}
-
-        //public async Task<Unit> Handle(AppUserRegisterCommand request, CancellationToken cancellationToken)
-        //{
-        //    await _appUserService.AddAsync(new AppUser
-        //    {
-        //        Name = request.Name,
-        //        Surname = request.Surname,
-        //        UserName = request.UserName,
-        //        PasswordHash=request.Password,
-        //        Email=request.Mail,
-        //        ImageUrl=request.ImageUrl
-        //    });
-        //    return Unit.Value;
-        //}
+    public class AppUserRegisterCommandHandler : IRequestHandler<AppUserRegisterCommand,bool>
+    {       
         private readonly UserManager<AppUser> _userManager;
+        private readonly RoleManager<AppRole> _roleManager;
 
-        public AppUserRegisterCommandHandler(UserManager<AppUser> userManager)
+        public AppUserRegisterCommandHandler(UserManager<AppUser> userManager, RoleManager<AppRole> roleManager)
         {
             _userManager = userManager;
+            _roleManager = roleManager;
         }
 
-        public async Task<Unit> Handle(AppUserRegisterCommand request, CancellationToken cancellationToken)
+        public async Task<bool> Handle(AppUserRegisterCommand request, CancellationToken cancellationToken)
         {
-            await _userManager.CreateAsync(new AppUser
+          var result=await _userManager.CreateAsync(new AppUser
             {
                 Name = request.Name,
                 Surname = request.Surname,
                 UserName = request.UserName,
                 Email = request.Mail
             },request.Password);
-            return Unit.Value;
+
+           
+            if (result.Succeeded)
+            {
+                AppUser user =await _userManager.FindByEmailAsync(request.Mail);
+
+                if (!await _roleManager.RoleExistsAsync("Writer"))
+                {
+                    await _roleManager.CreateAsync(new AppRole
+                    {                       
+                        Name="Writer"
+                    });
+                }
+                await _userManager.AddToRoleAsync(user, "Writer");
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+            
         }
     }
 }

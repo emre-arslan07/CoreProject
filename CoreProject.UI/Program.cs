@@ -14,27 +14,10 @@ using System.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-//var requireAuthorizePolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
-
 builder.Services.AddDbContext<CoreProjectDbContext>();
 builder.Services.AddIdentity<AppUser,AppRole>().AddEntityFrameworkStores<CoreProjectDbContext>();
 builder.Services.AddHttpClient();
 
-//builder.Services.AddControllersWithViews(opt =>
-//{
-//    opt.Filters.Add(new AuthorizeFilter(requireAuthorizePolicy));
-//});
-
-//builder.Services.AddMvc(config =>
-//{
-//    var policy = new AuthorizationPolicyBuilder()
-//                .RequireAuthenticatedUser()
-//                .Build();
-//    config.Filters.Add(new AuthorizeFilter(policy));
-
-//});
-//builder.Services.AddValidatorsFromAssemblyContaining<ExperienceVM>();
 
 builder.Services.AddControllers()
                 .AddFluentValidation(x =>

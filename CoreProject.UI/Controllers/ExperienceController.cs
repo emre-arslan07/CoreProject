@@ -26,7 +26,7 @@ namespace CoreProject.UI.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {            
-            return View(await GetListProvider<ExperienceVM>.GetListAsync("Experience","GetExperience"));
+            return View(await GenericApiProvider<ExperienceVM>.GetListAsync("Experience","GetExperience"));
         }
 
         [HttpGet]
