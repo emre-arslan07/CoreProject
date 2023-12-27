@@ -16,11 +16,13 @@ namespace CoreProject.UI.Controllers
     {
         private readonly INotyfService _notyfService;
         private readonly IValidator<ExperienceVM> _validator;
+        private readonly ILogger<ExperienceController> _logger;
 
-        public ExperienceController(INotyfService notyfService,IValidator<ExperienceVM> validator)
+        public ExperienceController(INotyfService notyfService,IValidator<ExperienceVM> validator, ILogger<ExperienceController> logger)
         {
             _notyfService = notyfService;
             _validator = validator;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -52,11 +54,13 @@ namespace CoreProject.UI.Controllers
                 if (await GenericApiProvider<ExperienceVM>.AddTentityAsync("Experience","AddExperience",experienceVM)==true)
                 {
                     _notyfService.Success("Ekleme işlemi başarılı", 3);
+                    _logger.LogInformation("Ekleme işlemi başarılı");
                     return RedirectToAction("AddExperience", "Experience");
                 }
                 else
                 {
                     _notyfService.Error("Ekleme işlemi başarısız", 3);
+                    _logger.LogError("Ekleme işlemi başarısız");
                     return RedirectToAction("AddExperience", "Experience");
                 }
             }           

@@ -11,8 +11,15 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using System.Configuration;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Information()
+    .WriteTo.File(@"logs/coreLog-.txt", rollingInterval: RollingInterval.Day)
+    .CreateLogger();
+builder.Host.UseSerilog(Log.Logger);
 
 builder.Services.AddDbContext<CoreProjectDbContext>();
 builder.Services.AddIdentity<AppUser,AppRole>().AddEntityFrameworkStores<CoreProjectDbContext>();
@@ -58,6 +65,14 @@ builder.Services.ConfigureApplicationCookie(options =>
 
 });
 builder.Services.AddMvc();
+
+//builder.Services.AddLogging(x =>
+//{
+//    x.ClearProviders();
+//    x.SetMinimumLevel(LogLevel.Debug);
+//    x.AddDebug();
+//});
+
 var app = builder.Build();
 
     // Configure the HTTP request pipeline.
